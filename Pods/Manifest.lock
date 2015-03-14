@@ -1,0 +1,15 @@
+PODS:
+  - libPusher (1.6):
+    - libPusher/Core (= 1.6)
+  - libPusher/Core (1.6):
+    - SocketRocket (= 0.3.1-beta2)
+  - SocketRocket (0.3.1-beta2)
+
+DEPENDENCIES:
+  - libPusher (~> 1.5)
+
+SPEC CHECKSUMS:
+  libPusher: e74dc1751de4e70481e5ec6d327b06baf9db487e
+  SocketRocket: 79a68ae186063c65e1fe6f638b1ae2927aa5f304
+
+COCOAPODS: 0.36.0

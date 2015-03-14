@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D2AE9952F0E7EBF36CE435A /* libPods-CustomerServiceClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0666847457F112CB93A3D7A /* libPods-CustomerServiceClient.a */; };
 		CFD86A061AB4953300B7DBF5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CFD86A051AB4953300B7DBF5 /* main.m */; };
 		CFD86A091AB4953300B7DBF5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CFD86A081AB4953300B7DBF5 /* AppDelegate.m */; };
 		CFD86A0C1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CFD86A0A1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C2E2C5E511BF5A3DBCB79F9C /* Pods-CustomerServiceClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerServiceClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-CustomerServiceClient/Pods-CustomerServiceClient.release.xcconfig"; sourceTree = "<group>"; };
 		CFD86A001AB4953300B7DBF5 /* CustomerServiceClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomerServiceClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFD86A041AB4953300B7DBF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFD86A051AB4953300B7DBF5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -42,6 +44,8 @@
 		CFD86A1C1AB4953300B7DBF5 /* CustomerServiceClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CustomerServiceClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFD86A211AB4953300B7DBF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFD86A221AB4953300B7DBF5 /* CustomerServiceClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomerServiceClientTests.m; sourceTree = "<group>"; };
+		E0666847457F112CB93A3D7A /* libPods-CustomerServiceClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CustomerServiceClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB66F01F8A3E7BC08FA9B772 /* Pods-CustomerServiceClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerServiceClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CustomerServiceClient/Pods-CustomerServiceClient.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D2AE9952F0E7EBF36CE435A /* libPods-CustomerServiceClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,12 +67,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		533BD2CDAC594942B3856AA4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0666847457F112CB93A3D7A /* libPods-CustomerServiceClient.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CFD869F71AB4953300B7DBF5 = {
 			isa = PBXGroup;
 			children = (
 				CFD86A021AB4953300B7DBF5 /* CustomerServiceClient */,
 				CFD86A1F1AB4953300B7DBF5 /* CustomerServiceClientTests */,
 				CFD86A011AB4953300B7DBF5 /* Products */,
+				DD9E41041C621C40D1057BB8 /* Pods */,
+				533BD2CDAC594942B3856AA4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +137,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		DD9E41041C621C40D1057BB8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EB66F01F8A3E7BC08FA9B772 /* Pods-CustomerServiceClient.debug.xcconfig */,
+				C2E2C5E511BF5A3DBCB79F9C /* Pods-CustomerServiceClient.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -129,9 +153,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CFD86A261AB4953300B7DBF5 /* Build configuration list for PBXNativeTarget "CustomerServiceClient" */;
 			buildPhases = (
+				A5B3EB209AAD13EDA4CD5F3C /* Check Pods Manifest.lock */,
 				CFD869FC1AB4953300B7DBF5 /* Sources */,
 				CFD869FD1AB4953300B7DBF5 /* Frameworks */,
 				CFD869FE1AB4953300B7DBF5 /* Resources */,
+				9AEFA1286F2B71F2324A76E8 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -216,6 +242,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9AEFA1286F2B71F2324A76E8 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CustomerServiceClient/Pods-CustomerServiceClient-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A5B3EB209AAD13EDA4CD5F3C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CFD869FC1AB4953300B7DBF5 /* Sources */ = {
@@ -345,6 +404,7 @@
 		};
 		CFD86A271AB4953300B7DBF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB66F01F8A3E7BC08FA9B772 /* Pods-CustomerServiceClient.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
@@ -355,6 +415,7 @@
 		};
 		CFD86A281AB4953300B7DBF5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C2E2C5E511BF5A3DBCB79F9C /* Pods-CustomerServiceClient.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
@@ -416,6 +477,7 @@
 				CFD86A281AB4953300B7DBF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CFD86A291AB4953300B7DBF5 /* Build configuration list for PBXNativeTarget "CustomerServiceClientTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +486,7 @@
 				CFD86A2B1AB4953300B7DBF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
