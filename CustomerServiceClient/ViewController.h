@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Pusher/Pusher.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <PTPusherDelegate, PTPusherPresenceChannelDelegate>
 
 
 @end
