@@ -18,7 +18,7 @@
     [super viewDidLoad];
 
     self.client = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
-    self.client.authorizationURL = [NSURL URLWithString:@"http://localhost:3000/pusher/auth"];
+    self.client.authorizationURL = [NSURL URLWithString:@"http://192.168.1.112:3000/pusher/auth"];
     [self.client connect];
     
     PTPusherPresenceChannel *channel = [self.client subscribeToPresenceChannelNamed:@"lobby" delegate:self];

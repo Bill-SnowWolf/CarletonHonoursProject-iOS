@@ -4,12 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-CustomerServiceClient-SocketRocket.xcscheme</key>
+		<key>Pods-CustomerServiceClient-Reachability.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-CustomerServiceClient-libPusher.xcscheme</key>
+		<key>Pods-CustomerServiceClient-ReactiveCocoa.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -22,17 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>27CEC13DE70DDC261C6EBF59</key>
+		<key>71C503A293F14FC3A071E6E4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>634B298917D61D0FE4AA2D07</key>
+		<key>9BE44CCDC8C74FA58E60FA92</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7913C355C08C80315F730160</key>
+		<key>C429B01DE27D4FF89C5F220E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

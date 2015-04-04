@@ -1,15 +1,21 @@
 PODS:
-  - libPusher (1.6):
-    - libPusher/Core (= 1.6)
-  - libPusher/Core (1.6):
-    - SocketRocket (= 0.3.1-beta2)
-  - SocketRocket (0.3.1-beta2)
+  - Reachability (3.2)
+  - ReactiveCocoa (2.4.7):
+    - ReactiveCocoa/Core
+    - ReactiveCocoa/no-arc
+    - ReactiveCocoa/UI
+  - ReactiveCocoa/Core (2.4.7):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.4.7)
+  - ReactiveCocoa/UI (2.4.7):
+    - ReactiveCocoa/Core
 
 DEPENDENCIES:
-  - libPusher (~> 1.6)
+  - Reachability (~> 3.1)
+  - ReactiveCocoa (~> 2.1)
 
 SPEC CHECKSUMS:
-  libPusher: e74dc1751de4e70481e5ec6d327b06baf9db487e
-  SocketRocket: 79a68ae186063c65e1fe6f638b1ae2927aa5f304
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.32.1
