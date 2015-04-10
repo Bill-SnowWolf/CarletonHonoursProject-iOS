@@ -1,17 +1,17 @@
+////
+////  VideoCallView.h
+////  CustomerServiceClient
+////
+////  Created by Xingnan Zhou on 2015-04-02.
+////  Copyright (c) 2015 SnowWolf. All rights reserved.
+////
 //
-//  VideoCallView.h
-//  CustomerServiceClient
+//#import <UIKit/UIKit.h>
+//#import "RTCEAGLVideoView.h"
 //
-//  Created by Xingnan Zhou on 2015-04-02.
-//  Copyright (c) 2015 SnowWolf. All rights reserved.
+//@interface VideoCallView : UIView
 //
-
-#import <UIKit/UIKit.h>
-#import "RTCEAGLVideoView.h"
-
-@interface VideoCallView : UIView
-
-@property (nonatomic, readonly) UILabel *statusLabel;
-@property (nonatomic, readonly) RTCEAGLVideoView *localVideoView;
-@property (nonatomic, readonly) RTCEAGLVideoView *remoteVideoView;
-@end
+//@property (nonatomic, readonly) UILabel *statusLabel;
+////@property (nonatomic, readonly) RTCEAGLVideoView *localVideoView;
+////@property (nonatomic, readonly) RTCEAGLVideoView *remoteVideoView;
+//@end

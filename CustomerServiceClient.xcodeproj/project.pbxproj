@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E785CB44B294C81A8BD66EC /* libPods-CustomerServiceClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3436A7D77B3F4DEA9C6ED23D /* libPods-CustomerServiceClient.a */; };
 		CF35ED921ACF932000D75D66 /* NSDictionary+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED6B1ACF932000D75D66 /* NSDictionary+QueryString.m */; };
 		CF35ED931ACF932000D75D66 /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED6C1ACF932000D75D66 /* NSString+Hashing.m */; };
 		CF35ED941ACF932000D75D66 /* PTBlockEventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED761ACF932000D75D66 /* PTBlockEventListener.m */; };
@@ -23,7 +22,6 @@
 		CF35ED9E1ACF932000D75D66 /* PTPusherMockConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED8D1ACF932000D75D66 /* PTPusherMockConnection.m */; };
 		CF35ED9F1ACF932000D75D66 /* PTTargetActionEventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED8F1ACF932000D75D66 /* PTTargetActionEventListener.m */; };
 		CF35EDA01ACF932000D75D66 /* PTURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED901ACF932000D75D66 /* PTURLRequestOperation.m */; };
-		CF35EDA31ACF95EF00D75D66 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF35EDA21ACF95EF00D75D66 /* libWebRTC.a */; };
 		CFC14DD81ACD8F2C009EC9B8 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DD71ACD8F2C009EC9B8 /* libc++.dylib */; };
 		CFC14DDA1ACD8F39009EC9B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DD91ACD8F39009EC9B8 /* libicucore.dylib */; };
 		CFC14DDC1ACD8F4A009EC9B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DDB1ACD8F4A009EC9B8 /* Security.framework */; };
@@ -60,7 +58,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3436A7D77B3F4DEA9C6ED23D /* libPods-CustomerServiceClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CustomerServiceClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D7F5BD210B94806AE6B0B5B /* Pods-CustomerServiceClient.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerServiceClient.xcconfig"; path = "Pods/Pods-CustomerServiceClient.xcconfig"; sourceTree = "<group>"; };
 		C2E2C5E511BF5A3DBCB79F9C /* Pods-CustomerServiceClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerServiceClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-CustomerServiceClient/Pods-CustomerServiceClient.release.xcconfig"; sourceTree = "<group>"; };
 		CF35EC781ACF2E1E00D75D66 /* RTCAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCAudioSource.h; sourceTree = "<group>"; };
@@ -128,7 +125,6 @@
 		CF35ED901ACF932000D75D66 /* PTURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTURLRequestOperation.m; sourceTree = "<group>"; };
 		CF35ED911ACF932000D75D66 /* Pusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pusher.h; sourceTree = "<group>"; };
 		CF35EDA11ACF934E00D75D66 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
-		CF35EDA21ACF95EF00D75D66 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = "CustomerServiceClient/WebRTC Framework/libWebRTC.a"; sourceTree = "<group>"; };
 		CFC14DD71ACD8F2C009EC9B8 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		CFC14DD91ACD8F39009EC9B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		CFC14DDB1ACD8F4A009EC9B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -167,7 +163,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFC14DF41ACD8FB4009EC9B8 /* libsqlite3.dylib in Frameworks */,
-				CF35EDA31ACF95EF00D75D66 /* libWebRTC.a in Frameworks */,
 				CFC14DF21ACD8FAC009EC9B8 /* QuartzCore.framework in Frameworks */,
 				CFC14DF01ACD8FA5009EC9B8 /* OpenGLES.framework in Frameworks */,
 				CFC14DEE1ACD8F9B009EC9B8 /* CoreGraphics.framework in Frameworks */,
@@ -182,7 +177,6 @@
 				CFC14DDC1ACD8F4A009EC9B8 /* Security.framework in Frameworks */,
 				CFC14DDA1ACD8F39009EC9B8 /* libicucore.dylib in Frameworks */,
 				CFC14DD81ACD8F2C009EC9B8 /* libc++.dylib in Frameworks */,
-				1E785CB44B294C81A8BD66EC /* libPods-CustomerServiceClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +193,6 @@
 		533BD2CDAC594942B3856AA4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CF35EDA21ACF95EF00D75D66 /* libWebRTC.a */,
 				CF35ED691ACF932000D75D66 /* Pusher Framework */,
 				CF35EC771ACF2E1E00D75D66 /* public */,
 				CFC14DF31ACD8FB4009EC9B8 /* libsqlite3.dylib */,
@@ -217,7 +210,6 @@
 				CFC14DDB1ACD8F4A009EC9B8 /* Security.framework */,
 				CFC14DD91ACD8F39009EC9B8 /* libicucore.dylib */,
 				CFC14DD71ACD8F2C009EC9B8 /* libc++.dylib */,
-				3436A7D77B3F4DEA9C6ED23D /* libPods-CustomerServiceClient.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -676,24 +668,17 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/ReactiveCocoa\"",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "arm64 armv7s armv7";
 			};
@@ -705,24 +690,17 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
-					"$(PROJECT_DIR)/CustomerServiceClient/WebRTC",
-					Framework,
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/ReactiveCocoa\"",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "arm64 armv7s armv7";
 			};
