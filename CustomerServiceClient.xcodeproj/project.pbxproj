@@ -22,6 +22,7 @@
 		CF35ED9E1ACF932000D75D66 /* PTPusherMockConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED8D1ACF932000D75D66 /* PTPusherMockConnection.m */; };
 		CF35ED9F1ACF932000D75D66 /* PTTargetActionEventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED8F1ACF932000D75D66 /* PTTargetActionEventListener.m */; };
 		CF35EDA01ACF932000D75D66 /* PTURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CF35ED901ACF932000D75D66 /* PTURLRequestOperation.m */; };
+		CFA5BE041AD8B6BB001154F4 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA5BE031AD8B6BB001154F4 /* libWebRTC.a */; };
 		CFC14DD81ACD8F2C009EC9B8 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DD71ACD8F2C009EC9B8 /* libc++.dylib */; };
 		CFC14DDA1ACD8F39009EC9B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DD91ACD8F39009EC9B8 /* libicucore.dylib */; };
 		CFC14DDC1ACD8F4A009EC9B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DDB1ACD8F4A009EC9B8 /* Security.framework */; };
@@ -125,6 +126,7 @@
 		CF35ED901ACF932000D75D66 /* PTURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTURLRequestOperation.m; sourceTree = "<group>"; };
 		CF35ED911ACF932000D75D66 /* Pusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pusher.h; sourceTree = "<group>"; };
 		CF35EDA11ACF934E00D75D66 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		CFA5BE031AD8B6BB001154F4 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = CustomerServiceClient/libWebRTC.a; sourceTree = "<group>"; };
 		CFC14DD71ACD8F2C009EC9B8 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		CFC14DD91ACD8F39009EC9B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		CFC14DDB1ACD8F4A009EC9B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -170,6 +172,7 @@
 				CFC14DEA1ACD8F8F009EC9B8 /* CoreMedia.framework in Frameworks */,
 				CFC14DE81ACD8F84009EC9B8 /* CoreAudio.framework in Frameworks */,
 				CFC14DE61ACD8F7C009EC9B8 /* AVFoundation.framework in Frameworks */,
+				CFA5BE041AD8B6BB001154F4 /* libWebRTC.a in Frameworks */,
 				CFC14DE41ACD8F70009EC9B8 /* AudioToolbox.framework in Frameworks */,
 				CFC14DE21ACD8F68009EC9B8 /* libstdc++.6.dylib in Frameworks */,
 				CFC14DE01ACD8F5C009EC9B8 /* GLKit.framework in Frameworks */,
@@ -193,6 +196,7 @@
 		533BD2CDAC594942B3856AA4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CFA5BE031AD8B6BB001154F4 /* libWebRTC.a */,
 				CF35ED691ACF932000D75D66 /* Pusher Framework */,
 				CF35EC771ACF2E1E00D75D66 /* public */,
 				CFC14DF31ACD8FB4009EC9B8 /* libsqlite3.dylib */,
@@ -677,7 +681,10 @@
 				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CustomerServiceClient",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "arm64 armv7s armv7";
@@ -699,7 +706,10 @@
 				INFOPLIST_FILE = CustomerServiceClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CustomerServiceClient",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "arm64 armv7s armv7";
