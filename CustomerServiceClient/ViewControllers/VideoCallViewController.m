@@ -11,6 +11,11 @@
 #import "RTCVideoTrack.h"
 #import "RTCMediaStream.h"
 #import "RTCPeerConnectionDelegate.h"
+#import "RTCPeerConnectionFactory.h"
+#import "RTCVideoCapturer.h"
+#import "RTCMediaConstraints.h"
+
+#import <AVFoundation/AVFoundation.h>
 
 @interface VideoCallViewController () <RTCPeerConnectionDelegate>
 {
@@ -18,6 +23,8 @@
     RTCVideoTrack *remoteVideoTrack;
 }
 @property (nonatomic) VideoCallView *videoCallView;
+@property (nonatomic) RTCPeerConnectionFactory *factory;
+@property (nonatomic) RTCMediaStream *localMediaStream;
 @end
 
 @implementation VideoCallViewController
@@ -25,22 +32,24 @@
 - (id)initWithRoomId:(NSInteger)roomId {
     self = [super init];
     if (self) {
-        
+        self.factory = [[RTCPeerConnectionFactory alloc] init];
     }
     return self;
 }
 
 - (void)loadView {
+    self.title = @"Video Call View Controller";
+    
     self.videoCallView = [[VideoCallView alloc] initWithFrame:CGRectZero];
+    self.videoCallView.backgroundColor = [UIColor redColor];
 //    self.videoCallView.delegate = self;
-    self.videoCallView.statusLabel.text =
-    [self statusTextForState:RTCICEConnectionNew];
-    self.view = _videoCallView;
+//    self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
+    self.view = self.videoCallView;
     
     ALog(@"Load View");
     
+    self.localMediaStream = [self createLocalMediaStream];
     
-
 }
 
 
@@ -49,20 +58,44 @@
     // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+// Get Stream
+- (RTCMediaStream *)createLocalMediaStream {
+    ALog(@"");
+    RTCMediaStream* localStream = [self.factory mediaStreamWithLabel:@"ARDAMS"];
+//    RTCVideoTrack* localVideoTrack = nil;
+    
+    // The iOS simulator doesn't provide any sort of camera capture
+    // support or emulation (http://goo.gl/rHAnC1) so don't bother
+    // trying to open a local stream.
+#if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
+    NSString *cameraID = nil;
+    for (AVCaptureDevice *captureDevice in
+         [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
+        if (captureDevice.position == AVCaptureDevicePositionFront) {
+            cameraID = [captureDevice localizedName];
+            break;
+        }
+    }
+    NSAssert(cameraID, @"Unable to get the front camera id");
+    
+    RTCVideoCapturer *capturer = [RTCVideoCapturer capturerWithDeviceName:cameraID];
+    RTCMediaConstraints *mediaConstraints = [self defaultMediaStreamConstraints];
+    RTCVideoSource *videoSource = [self.factory videoSourceWithCapturer:capturer
+                          constraints:mediaConstraints];
+    localVideoTrack = [self.factory videoTrackWithID:@"ARDAMSv0" source:videoSource];
+    ALog(@"%@", localVideoTrack);
+    if (localVideoTrack) {
+        [localStream addVideoTrack:localVideoTrack];
+    }
+//    [_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
+#endif
+    [localStream addAudioTrack:[self.factory audioTrackWithID:@"ARDAMSa0"]];
+    
+    [localVideoTrack addRenderer:self.videoCallView.localVideoView];
+    
+    return localStream;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 
 - (NSString *)statusTextForState:(RTCICEConnectionState)state {
@@ -78,6 +111,15 @@
             return nil;
     }
 }
+
+
+#pragma mark - Defaults
+
+- (RTCMediaConstraints *)defaultMediaStreamConstraints {
+    RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil optionalConstraints:nil];
+    return constraints;
+}
+
 
 #pragma mark - <RTCPeerConnection>
 // Callbacks for this delegate occur on non-main thread and need to be

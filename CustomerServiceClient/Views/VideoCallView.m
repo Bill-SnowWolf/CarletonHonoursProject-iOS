@@ -45,6 +45,7 @@ static CGFloat const kLocalVideoViewPadding = 8;
 }
 
 - (void)layoutSubviews {
+    ALog(@"");
     CGRect bounds = self.bounds;
     if (_remoteVideoSize.width > 0 && _remoteVideoSize.height > 0) {
         // Aspect fill remote video into bounds.

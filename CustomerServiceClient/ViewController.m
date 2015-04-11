@@ -7,9 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "VideoCallViewController.h"
 
 @interface ViewController ()
 @property (nonatomic, strong) PTPusher *client;
+
+- (IBAction)prepare:(id)sender;
 @end
 
 @implementation ViewController
@@ -34,6 +37,11 @@
 //        NSLog(@"message received: %@", event.data);
 //    }];
     
+}
+
+- (IBAction)prepare:(id)sender {
+    VideoCallViewController *viewController = [[VideoCallViewController alloc] initWithRoomId:1];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
