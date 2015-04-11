@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "VideoCallViewController.h"
 
+
 @interface ViewController ()
 @property (nonatomic, strong) PTPusher *client;
 
@@ -20,17 +21,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.client = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
-    self.client.authorizationURL = [NSURL URLWithString:@"http://192.168.1.112:3000/pusher/auth"];
+    self.client = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:NO];
+    self.client.authorizationURL = [NSURL URLWithString:@"http://172.17.63.203:3000/pusher/auth_video"];
     [self.client connect];
     
-    PTPusherPresenceChannel *channel = [self.client subscribeToPresenceChannelNamed:@"lobby" delegate:self];
+    PTPusherPrivateChannel *channel = [self.client subscribeToPrivateChannelNamed:@"video-1"];
 //    PTPusherChannel *channel = [self.client subscribeToChannelNamed:@"test"];
     
 
-    [channel bindToEventNamed:@"pusher:subscription_succeeded" handleWithBlock:^(PTPusherEvent *event) {
-        NSLog(@"Subscription succeeded");
-    }];
+//    [channel bindToEventNamed:@"pusher:subscription_succeeded" handleWithBlock:^(PTPusherEvent *event) {
+//        NSLog(@"Subscription succeeded");
+//    }];
 //    [channel bindToEventNamed:@"message" handleWithBlock:^(PTPusherEvent *event) {
 //        // channelEvent.data is a NSDictianary of the JSON object received
 //        NSString *message = [event.data objectForKey:@"text"];
@@ -49,18 +50,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark <PTPusherPresenceChannelDelegate>
-- (void)presenceChannel:(PTPusherPresenceChannel *)channel memberAdded:(PTPusherChannelMember *)member {
-    NSLog(@"Member Added");
-}
-
-- (void)presenceChannel:(PTPusherPresenceChannel *)channel memberRemoved:(PTPusherChannelMember *)member {
-    NSLog(@"Member Removed");
-}
-
-- (void)presenceChannelDidSubscribe:(PTPusherPresenceChannel *)channel {
-     NSLog(@"Did Subscribe");
-}
+//#pragma mark <PTPusherPresenceChannelDelegate>
+//- (void)presenceChannel:(PTPusherPresenceChannel *)channel memberAdded:(PTPusherChannelMember *)member {
+//    NSLog(@"Member Added");
+//}
+//
+//- (void)presenceChannel:(PTPusherPresenceChannel *)channel memberRemoved:(PTPusherChannelMember *)member {
+//    NSLog(@"Member Removed");
+//}
+//
+//- (void)presenceChannelDidSubscribe:(PTPusherPresenceChannel *)channel {
+//     NSLog(@"Did Subscribe");
+//}
 
 #pragma mark - PTPusherDelegate methods
 
@@ -126,9 +127,14 @@
  This demonstrates how we can intercept the authorization request to configure it for our app's
  authentication/authorisation needs.
  */
-- (void)pusher:(PTPusher *)pusher willAuthorizeChannelWithRequest:(NSMutableURLRequest *)request
-{
-    NSLog(@"[pusher-%@] Authorizing channel access...", pusher.connection.socketID);
-//    [request setHTTPBasicAuthUsername:CHANNEL_AUTH_USERNAME password:CHANNEL_AUTH_PASSWORD];
+- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withRequest:(NSMutableURLRequest *)request {
+    ALog(@"[pusher-%@] Authorizing channel access...", pusher.connection.socketID);
+    [request setValue:@"1" forHTTPHeaderField:@"room_number"];
+
+//    NSMutableDictionary *dict;
+//    [dict sortedQueryString];
+//    
+//    ALog(@"%@", [NSJSONSerialization JSONObjectWithData:request.HTTPBody options:0 error:nil]);
 }
+
 @end

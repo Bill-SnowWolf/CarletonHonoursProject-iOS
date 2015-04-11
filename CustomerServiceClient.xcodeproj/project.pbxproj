@@ -121,7 +121,7 @@
 		CFA5BE221AD8B9BF001154F4 /* PTPusherAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTPusherAPI.m; sourceTree = "<group>"; };
 		CFA5BE231AD8B9BF001154F4 /* PTPusherChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherChannel.h; sourceTree = "<group>"; };
 		CFA5BE241AD8B9BF001154F4 /* PTPusherChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTPusherChannel.m; sourceTree = "<group>"; };
-		CFA5BE251AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTPusherChannelAuthorizationOperation.m; sourceTree = "<group>"; };
+		CFA5BE251AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTPusherChannelAuthorizationOperation.m; path = ../PTPusherChannelAuthorizationOperation.m; sourceTree = "<group>"; };
 		CFA5BE261AD8B9BF001154F4 /* PTPusherConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherConnection.h; sourceTree = "<group>"; };
 		CFA5BE271AD8B9BF001154F4 /* PTPusherConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTPusherConnection.m; sourceTree = "<group>"; };
 		CFA5BE281AD8B9BF001154F4 /* PTPusherDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherDelegate.h; sourceTree = "<group>"; };
@@ -290,7 +290,6 @@
 				CFA5BE221AD8B9BF001154F4 /* PTPusherAPI.m */,
 				CFA5BE231AD8B9BF001154F4 /* PTPusherChannel.h */,
 				CFA5BE241AD8B9BF001154F4 /* PTPusherChannel.m */,
-				CFA5BE251AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.m */,
 				CFA5BE261AD8B9BF001154F4 /* PTPusherConnection.h */,
 				CFA5BE271AD8B9BF001154F4 /* PTPusherConnection.m */,
 				CFA5BE281AD8B9BF001154F4 /* PTPusherDelegate.h */,
@@ -320,6 +319,7 @@
 				CFA5BE151AD8B9BF001154F4 /* PTJSON.h */,
 				CFA5BE161AD8B9BF001154F4 /* PTPusherChannel_Private.h */,
 				CFA5BE171AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.h */,
+				CFA5BE251AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.m */,
 				CFA5BE181AD8B9BF001154F4 /* PTTargetActionEventListener.h */,
 				CFA5BE191AD8B9BF001154F4 /* PTURLRequestOperation.h */,
 			);
@@ -351,6 +351,8 @@
 			children = (
 				CF9636CD1AD976DB00D1279B /* VideoCallViewController.h */,
 				CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */,
+				CFD86A0D1AB4953300B7DBF5 /* ViewController.h */,
+				CFD86A0E1AB4953300B7DBF5 /* ViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -383,8 +385,6 @@
 				CFC14DF51ACD8FDC009EC9B8 /* Views */,
 				CFD86A071AB4953300B7DBF5 /* AppDelegate.h */,
 				CFD86A081AB4953300B7DBF5 /* AppDelegate.m */,
-				CFD86A0D1AB4953300B7DBF5 /* ViewController.h */,
-				CFD86A0E1AB4953300B7DBF5 /* ViewController.m */,
 				CFD86A101AB4953300B7DBF5 /* Main.storyboard */,
 				CFD86A131AB4953300B7DBF5 /* Images.xcassets */,
 				CFD86A151AB4953300B7DBF5 /* LaunchScreen.xib */,
