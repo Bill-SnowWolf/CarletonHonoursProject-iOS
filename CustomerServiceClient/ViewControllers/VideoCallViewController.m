@@ -14,10 +14,13 @@
 #import "RTCPeerConnectionFactory.h"
 #import "RTCVideoCapturer.h"
 #import "RTCMediaConstraints.h"
+#import "RTCPair.h"
+#import "RTCPeerConnection.h"
+#import "RTCSessionDescriptionDelegate.h"
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface VideoCallViewController () <RTCPeerConnectionDelegate>
+@interface VideoCallViewController () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 {
     RTCVideoTrack *localVideoTrack;
     RTCVideoTrack *remoteVideoTrack;
@@ -25,6 +28,7 @@
 @property (nonatomic) VideoCallView *videoCallView;
 @property (nonatomic) RTCPeerConnectionFactory *factory;
 @property (nonatomic) RTCMediaStream *localMediaStream;
+@property (nonatomic) RTCPeerConnection *peerConnection;
 @end
 
 @implementation VideoCallViewController
@@ -40,15 +44,33 @@
 - (void)loadView {
     self.title = @"Video Call View Controller";
     
+    UIBarButtonItem *startBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Call" style:UIBarButtonItemStylePlain target:self action:@selector(makeCall)];
+    self.navigationItem.rightBarButtonItem = startBarItem;
+    
+    
+    // Initialize WebRTC Views
     self.videoCallView = [[VideoCallView alloc] initWithFrame:CGRectZero];
     self.videoCallView.backgroundColor = [UIColor redColor];
 //    self.videoCallView.delegate = self;
-//    self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
+    self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
     self.view = self.videoCallView;
     
     ALog(@"Load View");
     
     self.localMediaStream = [self createLocalMediaStream];
+    
+}
+
+- (void)makeCall {
+    // Create Instance of RTCPeerConnection
+    RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
+    self.peerConnection = [_factory peerConnectionWithICEServers:nil
+                                                 constraints:constraints
+                                                    delegate:self];
+    
+    [self.peerConnection addStream:self.localMediaStream];
+    
+    [self.peerConnection createOfferWithDelegate:self constraints:[self defaultMediaStreamConstraints]];
     
 }
 
@@ -120,6 +142,30 @@
     return constraints;
 }
 
+- (RTCMediaConstraints *)defaultPeerConnectionConstraints {
+//    if (_defaultPeerConnectionConstraints) {
+//        return _defaultPeerConnectionConstraints;
+//    }
+    NSArray *optionalConstraints = @[
+                                     [[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"true"]
+                                     ];
+    RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil optionalConstraints:optionalConstraints];
+    return constraints;
+}
+
+- (RTCMediaConstraints *)defaultOfferConstraints {
+    NSArray *mandatoryConstraints = @[
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]
+                                      ];
+    RTCMediaConstraints* constraints =
+    [[RTCMediaConstraints alloc]
+     initWithMandatoryConstraints:mandatoryConstraints
+     optionalConstraints:nil];
+    return constraints;
+}
+
+
 
 #pragma mark - <RTCPeerConnection>
 // Callbacks for this delegate occur on non-main thread and need to be
@@ -182,6 +228,64 @@
     didOpenDataChannel:(RTCDataChannel*)dataChannel {
 }
 
+#pragma mark - <RTCSessionDescriptionDelegate>
+// Callbacks for this delegate occur on non-main thread and need to be
+// dispatched back to main queue as needed.
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error {
+    
+    ALog(@"4");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (error) {
+            ALog(@"Failed to create session description. Error: %@", error);
+//            [self disconnect];
+//            NSDictionary *userInfo = @{
+//                                       NSLocalizedDescriptionKey: @"Failed to create session description.",
+//                                       };
+//            NSError *sdpError =
+//            [[NSError alloc] initWithDomain:kARDAppClientErrorDomain
+//                                       code:kARDAppClientErrorCreateSDP
+//                                   userInfo:userInfo];
+//            [_delegate appClient:self didError:sdpError];
+            return;
+        }
+        [_peerConnection setLocalDescriptionWithDelegate:self
+                                      sessionDescription:sdp];
+        ALog(@"6");
+//        ARDSessionDescriptionMessage *message =
+//        [[ARDSessionDescriptionMessage alloc] initWithDescription:sdp];
+//        [self sendSignalingMessage:message];
+    });
+}
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+didSetSessionDescriptionWithError:(NSError *)error {
+    ALog(@"5");
+    dispatch_async(dispatch_get_main_queue(), ^{
+//        if (error) {
+//            NSLog(@"Failed to set session description. Error: %@", error);
+//            [self disconnect];
+//            NSDictionary *userInfo = @{
+//                                       NSLocalizedDescriptionKey: @"Failed to set session description.",
+//                                       };
+//            NSError *sdpError =
+//            [[NSError alloc] initWithDomain:kARDAppClientErrorDomain
+//                                       code:kARDAppClientErrorSetSDP
+//                                   userInfo:userInfo];
+//            [_delegate appClient:self didError:sdpError];
+//            return;
+//        }
+//        // If we're answering and we've just set the remote offer we need to create
+//        // an answer and set the local description.
+//        if (!_isInitiator && !_peerConnection.localDescription) {
+//            ALog(@"7");
+//            RTCMediaConstraints *constraints = [self defaultAnswerConstraints];
+//            [_peerConnection createAnswerWithDelegate:self
+//                                          constraints:constraints];
+//            
+//        }
+    });
+}
 
 
 @end

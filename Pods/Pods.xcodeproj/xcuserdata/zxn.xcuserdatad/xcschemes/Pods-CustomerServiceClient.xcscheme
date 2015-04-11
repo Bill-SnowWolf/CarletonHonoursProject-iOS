@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0510"
+   LastUpgradeVersion = "0620"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -39,6 +39,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C429B01DE27D4FF89C5F220E"
+            BuildableName = "libPods-CustomerServiceClient.a"
+            BlueprintName = "Pods-CustomerServiceClient"
+            ReferencedContainer = "container:Pods.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
