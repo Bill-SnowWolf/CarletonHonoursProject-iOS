@@ -50,6 +50,29 @@
   return [[self alloc] initWithURLRequest:request];
 }
 
++ (id)operationWithAuthorizationURL:(NSURL *)URL channelName:(NSString *)channelName socketID:(NSString *)socketID auth:(NSDictionary *)customAuth {
+    NSAssert(URL, @"URL is required for authorization! (Did you set PTPusher.authorizationURL?)");
+    
+    // a short-circuit for testing, using a special URL
+    if ([[URL absoluteString] isEqualToString:PTPusherAuthorizationBypassURL]) {
+        return [[PTPusherChannelAuthorizationBypassOperation alloc] init];
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    
+    NSMutableDictionary *requestData = [NSMutableDictionary dictionary];
+    requestData[@"socket_id"] = socketID;
+    requestData[@"channel_name"] = channelName;
+    [requestData addEntriesFromDictionary:customAuth];
+//    requestData[@"room_number"] = @"1";
+    
+    [request setHTTPBody:[[requestData sortedQueryString] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    return [[self alloc] initWithURLRequest:request];
+}
+
 - (void)finish
 {
   if (self.isCancelled) {

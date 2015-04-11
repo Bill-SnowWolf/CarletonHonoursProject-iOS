@@ -191,9 +191,30 @@ NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, 
   return channel;
 }
 
+// Custom Auth by @SnowWolf
+- (PTPusherChannel *)subscribeToChannelNamed:(NSString *)name auth:(NSDictionary *)auth {
+    ALog(@"%@", auth);
+    PTPusherChannel *channel = channels[name];
+    if (channel == nil) {
+        channel = [PTPusherChannel channelWithName:name pusher:self];
+        channels[name] = channel;
+    }
+    // private/presence channels require a socketID to authenticate
+    if (self.connection.isConnected && self.connection.socketID) {
+        [self subscribeToChannel:channel auth:auth];
+    }
+    return channel;
+}
+
 - (PTPusherPrivateChannel *)subscribeToPrivateChannelNamed:(NSString *)name
 {
   return (PTPusherPrivateChannel *)[self subscribeToChannelNamed:[NSString stringWithFormat:@"private-%@", name]];
+}
+
+- (PTPusherPrivateChannel *)subscribeToPrivateChannelNamed:(NSString *)name auth:(NSDictionary *)auth {
+    PTPusherPrivateChannel *privateChannel = (PTPusherPrivateChannel *)[self subscribeToChannelNamed:[NSString stringWithFormat:@"private-%@", name] auth:auth];
+    privateChannel.auth = auth;
+    return privateChannel;
 }
 
 - (PTPusherPresenceChannel *)subscribeToPresenceChannelNamed:(NSString *)name
@@ -269,11 +290,37 @@ NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, 
   }];
 }
 
+- (void)subscribeToChannel:(PTPusherChannel *)channel auth:(NSDictionary *)auth {
+    ALog(@"%@", auth);
+    [channel authorizeWithAuth:auth completionHandler:^(BOOL isAuthorized, NSDictionary *authData, NSError *error) {
+        if (isAuthorized && self.connection.isConnected) {
+            if ([self.delegate respondsToSelector:@selector(pusher:authorizationPayloadFromResponseData:)]) {
+                authData = [self.delegate pusher:self authorizationPayloadFromResponseData:authData];
+            }
+            [channel subscribeWithAuthorization:authData];
+        }
+        else {
+            if (error == nil) {
+                error = [NSError errorWithDomain:PTPusherErrorDomain code:PTPusherSubscriptionUnknownAuthorisationError userInfo:nil];
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(pusher:didFailToSubscribeToChannel:withError:)]) {
+                [self.delegate pusher:self didFailToSubscribeToChannel:channel withError:error];
+            }
+        }
+    }];
+}
+
 - (void)subscribeAll
 {
-  for (PTPusherChannel *channel in [channels allValues]) {
-    [self subscribeToChannel:channel];
-  }
+    for (PTPusherChannel *channel in [channels allValues]) {
+        if (channel.isPrivate) {
+            PTPusherPrivateChannel *private = (PTPusherPrivateChannel *)channel;
+            [self subscribeToChannel:private auth:private.auth];
+        } else {
+            [self subscribeToChannel:channel];
+        }
+    }
 }
 
 #pragma mark - Sending events

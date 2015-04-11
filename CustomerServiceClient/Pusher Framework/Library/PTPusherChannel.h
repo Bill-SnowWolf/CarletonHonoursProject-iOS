@@ -76,6 +76,9 @@
 - (id)initWithName:(NSString *)channelName pusher:(PTPusher *)pusher;
 - (void)authorizeWithCompletionHandler:(void(^)(BOOL, NSDictionary *, NSError *))completionHandler;
 
+// Custom Auth @Author: SnowWolf
+- (void)authorizeWithAuth:(NSDictionary *)authDict completionHandler:(void(^)(BOOL, NSDictionary *, NSError *))completionHandler;
+
 ///------------------------------------------------------------------------------------/
 /// @name Unsubscribing
 ///------------------------------------------------------------------------------------/
@@ -103,6 +106,8 @@
  Only private and presence channels support client triggered events.
  */
 @interface PTPusherPrivateChannel : PTPusherChannel
+
+@property (nonatomic) NSDictionary *auth;
 
 ///------------------------------------------------------------------------------------/
 /// @name Triggering events

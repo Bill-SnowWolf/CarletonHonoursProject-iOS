@@ -25,7 +25,7 @@
     self.client.authorizationURL = [NSURL URLWithString:@"http://172.17.63.203:3000/pusher/auth_video"];
     [self.client connect];
     
-    PTPusherPrivateChannel *channel = [self.client subscribeToPrivateChannelNamed:@"video-1"];
+    PTPusherPrivateChannel *channel = [self.client subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
 //    PTPusherChannel *channel = [self.client subscribeToChannelNamed:@"test"];
     
 
@@ -74,6 +74,8 @@
 - (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection
 {
     NSLog(@"[pusher-%@] Pusher client connected", connection.socketID);
+    
+
 }
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error
@@ -129,7 +131,7 @@
  */
 - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withRequest:(NSMutableURLRequest *)request {
     ALog(@"[pusher-%@] Authorizing channel access...", pusher.connection.socketID);
-    [request setValue:@"1" forHTTPHeaderField:@"room_number"];
+//    [request setValue:@"1" forHTTPHeaderField:@"room_number"];
 
 //    NSMutableDictionary *dict;
 //    [dict sortedQueryString];

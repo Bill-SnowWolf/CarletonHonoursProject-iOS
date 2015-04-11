@@ -231,8 +231,9 @@
 
 - (void)authorizeWithCompletionHandler:(void(^)(BOOL, NSDictionary *, NSError *))completionHandler
 {
+    ALog(@"");
   PTPusherChannelAuthorizationOperation *authOperation = [PTPusherChannelAuthorizationOperation operationWithAuthorizationURL:self.pusher.authorizationURL channelName:self.name socketID:self.pusher.connection.socketID];
-  
+    
   [authOperation setCompletionHandler:^(PTPusherChannelAuthorizationOperation *operation) {
     completionHandler(operation.isAuthorized, operation.authorizationData, operation.error);
   }];
@@ -242,6 +243,21 @@
   }
   
   [self.pusher beginAuthorizationOperation:authOperation];
+}
+
+- (void)authorizeWithAuth:(NSDictionary *)authDict completionHandler:(void (^)(BOOL, NSDictionary *, NSError *))completionHandler {
+    ALog(@"%@", authDict);
+    PTPusherChannelAuthorizationOperation *authOperation = [PTPusherChannelAuthorizationOperation operationWithAuthorizationURL:self.pusher.authorizationURL channelName:self.name socketID:self.pusher.connection.socketID auth:authDict];
+    
+    [authOperation setCompletionHandler:^(PTPusherChannelAuthorizationOperation *operation) {
+        completionHandler(operation.isAuthorized, operation.authorizationData, operation.error);
+    }];
+    
+    if ([self.pusher.delegate respondsToSelector:@selector(pusher:willAuthorizeChannel:withRequest:)]) {
+        [self.pusher.delegate pusher:self.pusher willAuthorizeChannel:self withRequest:authOperation.mutableURLRequest];
+    }
+    
+    [self.pusher beginAuthorizationOperation:authOperation];
 }
 
 - (void)subscribeWithAuthorization:(NSDictionary *)authData
