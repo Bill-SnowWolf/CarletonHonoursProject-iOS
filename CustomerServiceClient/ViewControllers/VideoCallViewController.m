@@ -9,8 +9,10 @@
 #import "VideoCallViewController.h"
 #import "VideoCallView.h"
 #import "RTCVideoTrack.h"
+#import "RTCMediaStream.h"
+#import "RTCPeerConnectionDelegate.h"
 
-@interface VideoCallViewController ()
+@interface VideoCallViewController () <RTCPeerConnectionDelegate>
 {
     RTCVideoTrack *localVideoTrack;
     RTCVideoTrack *remoteVideoTrack;
@@ -36,6 +38,8 @@
     self.view = _videoCallView;
     
     ALog(@"Load View");
+    
+    
 
 }
 
@@ -73,6 +77,67 @@
         case RTCICEConnectionClosed:
             return nil;
     }
+}
+
+#pragma mark - <RTCPeerConnection>
+// Callbacks for this delegate occur on non-main thread and need to be
+// dispatched back to main queue as needed.
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+ signalingStateChanged:(RTCSignalingState)stateChanged {
+    ALog(@"Signaling state changed: %d", stateChanged);
+}
+
+// onaddstream
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+           addedStream:(RTCMediaStream *)stream {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ALog(@"Received %lu video tracks and %lu audio tracks",
+              (unsigned long)stream.videoTracks.count,
+              (unsigned long)stream.audioTracks.count);
+        //    if (stream.videoTracks.count) {
+        //      RTCVideoTrack *videoTrack = stream.videoTracks[0];
+        //      [_delegate appClient:self didReceiveRemoteVideoTrack:videoTrack];
+        //    }
+    });
+}
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+         removedStream:(RTCMediaStream *)stream {
+    ALog(@"Stream was removed.");
+}
+
+- (void)peerConnectionOnRenegotiationNeeded:
+(RTCPeerConnection *)peerConnection {
+    ALog(@"WARNING: Renegotiation needed but unimplemented.");
+}
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+  iceConnectionChanged:(RTCICEConnectionState)newState {
+    ALog(@"ICE state changed: %d", newState);
+    dispatch_async(dispatch_get_main_queue(), ^{
+//        [_delegate appClient:self didChangeConnectionState:newState];
+    });
+}
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+   iceGatheringChanged:(RTCICEGatheringState)newState {
+    NSLog(@"ICE gathering state changed: %d", newState);
+}
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+       gotICECandidate:(RTCICECandidate *)candidate {
+    // onicecandidate
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ALog(@"8");
+//        ARDICECandidateMessage *message =
+//        [[ARDICECandidateMessage alloc] initWithCandidate:candidate];
+//        [self sendSignalingMessage:message];
+    });
+}
+
+- (void)peerConnection:(RTCPeerConnection*)peerConnection
+    didOpenDataChannel:(RTCDataChannel*)dataChannel {
 }
 
 
