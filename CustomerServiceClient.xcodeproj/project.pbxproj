@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF9636CF1AD976DB00D1279B /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */; };
 		CFA5BE0D1AD8B91D001154F4 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA5BE0C1AD8B91D001154F4 /* libWebRTC.a */; };
 		CFA5BE361AD8B9BF001154F4 /* NSDictionary+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE0F1AD8B9BF001154F4 /* NSDictionary+QueryString.m */; };
 		CFA5BE371AD8B9BF001154F4 /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE101AD8B9BF001154F4 /* NSString+Hashing.m */; };
@@ -88,6 +89,10 @@
 		CF35EC901ACF2E1E00D75D66 /* RTCVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCVideoSource.h; sourceTree = "<group>"; };
 		CF35EC911ACF2E1E00D75D66 /* RTCVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCVideoTrack.h; sourceTree = "<group>"; };
 		CF35EDA11ACF934E00D75D66 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		CF9636CD1AD976DB00D1279B /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoCallViewController.h; path = ViewControllers/VideoCallViewController.h; sourceTree = "<group>"; };
+		CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoCallViewController.m; path = ViewControllers/VideoCallViewController.m; sourceTree = "<group>"; };
+		CF9636D01AD977EB00D1279B /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		CF9636D11AD9782500D1279B /* CSC-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CSC-Prefix.pch"; sourceTree = "<group>"; };
 		CFA5BE0C1AD8B91D001154F4 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = CustomerServiceClient/libWebRTC.a; sourceTree = "<group>"; };
 		CFA5BE0F1AD8B9BF001154F4 /* NSDictionary+QueryString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+QueryString.m"; sourceTree = "<group>"; };
 		CFA5BE101AD8B9BF001154F4 /* NSString+Hashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hashing.m"; sourceTree = "<group>"; };
@@ -334,6 +339,8 @@
 		CFC14DF71ACD8FEA009EC9B8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CF9636CD1AD976DB00D1279B /* VideoCallViewController.h */,
+				CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -373,6 +380,7 @@
 				CFD86A151AB4953300B7DBF5 /* LaunchScreen.xib */,
 				CFD86A0A1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld */,
 				CFD86A031AB4953300B7DBF5 /* Supporting Files */,
+				CF9636D01AD977EB00D1279B /* Common.h */,
 			);
 			path = CustomerServiceClient;
 			sourceTree = "<group>";
@@ -382,6 +390,7 @@
 			children = (
 				CFD86A041AB4953300B7DBF5 /* Info.plist */,
 				CFD86A051AB4953300B7DBF5 /* main.m */,
+				CF9636D11AD9782500D1279B /* CSC-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -538,6 +547,7 @@
 				CFA5BE3B1AD8B9BF001154F4 /* PTPusher.m in Sources */,
 				CFD86A0C1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld in Sources */,
 				CFA5BE431AD8B9BF001154F4 /* PTTargetActionEventListener.m in Sources */,
+				CF9636CF1AD976DB00D1279B /* VideoCallViewController.m in Sources */,
 				CFA5BE401AD8B9BF001154F4 /* PTPusherEvent.m in Sources */,
 				CFA5BE361AD8B9BF001154F4 /* NSDictionary+QueryString.m in Sources */,
 				CFA5BE3E1AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.m in Sources */,
@@ -672,6 +682,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "CustomerServiceClient/CSC-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers\"",
 					"\"${PODS_ROOT}/Headers/Reachability\"",
@@ -697,6 +708,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "CustomerServiceClient/CSC-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers\"",
 					"\"${PODS_ROOT}/Headers/Reachability\"",
