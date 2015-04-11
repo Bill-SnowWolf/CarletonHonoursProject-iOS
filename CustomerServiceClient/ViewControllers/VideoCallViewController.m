@@ -17,6 +17,7 @@
 #import "RTCPair.h"
 #import "RTCPeerConnection.h"
 #import "RTCSessionDescriptionDelegate.h"
+#import "SignalingMessage.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -37,6 +38,8 @@
     self = [super init];
     if (self) {
         self.factory = [[RTCPeerConnectionFactory alloc] init];
+        
+        
     }
     return self;
 }
@@ -249,11 +252,11 @@
 //            [_delegate appClient:self didError:sdpError];
             return;
         }
-        [_peerConnection setLocalDescriptionWithDelegate:self
+        [self.peerConnection setLocalDescriptionWithDelegate:self
                                       sessionDescription:sdp];
         ALog(@"6");
-//        ARDSessionDescriptionMessage *message =
-//        [[ARDSessionDescriptionMessage alloc] initWithDescription:sdp];
+        SessionDescriptionMessage *message = [[SessionDescriptionMessage alloc] initWithDescription:sdp];
+        
 //        [self sendSignalingMessage:message];
     });
 }
@@ -286,6 +289,9 @@ didSetSessionDescriptionWithError:(NSError *)error {
 //        }
     });
 }
+
+#pragma mark - Pusher Signaling
+
 
 
 @end
