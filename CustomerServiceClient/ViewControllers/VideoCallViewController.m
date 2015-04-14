@@ -41,6 +41,14 @@
     if (self) {
         self.factory = [[RTCPeerConnectionFactory alloc] init];
         
+        // Create Instance of RTCPeerConnection
+        RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
+        self.peerConnection = [_factory peerConnectionWithICEServers:nil
+                                                         constraints:constraints
+                                                            delegate:self];
+        
+        [self.peerConnection addStream:self.localMediaStream];        
+        
         
         // Initialize Pusher Signaling
 //        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
@@ -80,16 +88,7 @@
 }
 
 - (void)makeCall {
-    // Create Instance of RTCPeerConnection
-    RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
-    self.peerConnection = [_factory peerConnectionWithICEServers:nil
-                                                 constraints:constraints
-                                                    delegate:self];
-    
-    [self.peerConnection addStream:self.localMediaStream];
-    
     [self.peerConnection createOfferWithDelegate:self constraints:[self defaultMediaStreamConstraints]];
-    
 }
 
 
