@@ -43,9 +43,9 @@
         
         
         // Initialize Pusher Signaling
-        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
-        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.112:3000/pusher/auth"];
-        [self.pusher connect];
+//        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
+//        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.112:3000/pusher/auth"];
+//        [self.pusher connect];
         
 //        PTPusherPresenceChannel *channel = [self.client subscribeToPresenceChannelNamed:@"lobby" delegate:self];
 //    PTPusherChannel *channel = [self.client subscribeToChannelNamed:@"test"];
