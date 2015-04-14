@@ -268,7 +268,7 @@
         }
         [self.peerConnection setLocalDescriptionWithDelegate:self
                                       sessionDescription:sdp];
-        ALog(@"6");
+        ALog(@"6 type: %@", sdp.type);
         SessionDescriptionMessage *message = [[SessionDescriptionMessage alloc] initWithDescription:sdp];
         
 //        [self sendSignalingMessage:message];

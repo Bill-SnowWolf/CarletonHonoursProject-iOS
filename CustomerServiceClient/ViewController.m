@@ -21,11 +21,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.client = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:NO];
-    self.client.authorizationURL = [NSURL URLWithString:@"http://172.17.63.203:3000/pusher/auth_video"];
-    [self.client connect];
-    
-    PTPusherPrivateChannel *channel = [self.client subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
+//    self.client = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:NO];
+//    self.client.authorizationURL = [NSURL URLWithString:@"http://172.17.63.203:3000/pusher/auth_video"];
+//    [self.client connect];
+//    
+//    PTPusherPrivateChannel *channel = [self.client subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
 //    PTPusherChannel *channel = [self.client subscribeToChannelNamed:@"test"];
     
 
