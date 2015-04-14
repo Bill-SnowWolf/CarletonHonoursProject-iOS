@@ -32,6 +32,7 @@
 @property (nonatomic) RTCMediaStream *localMediaStream;
 @property (nonatomic) RTCPeerConnection *peerConnection;
 @property (nonatomic) PTPusher *pusher;
+@property (nonatomic) PTPusherPrivateChannel *privateChannel;
 @end
 
 @implementation VideoCallViewController
@@ -51,6 +52,33 @@
         
         
         // Initialize Pusher Signaling
+        
+        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
+        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.202:3000/pusher/auth_video"];
+        [self.pusher connect];
+        
+        self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
+        
+        [self.privateChannel bindToEventNamed:@"client-offer" handleWithBlock:^(PTPusherEvent *event) {
+            NSDictionary *offer = [NSDictionary dictionaryWithDictionary:event.data];
+            ALog(@"Client-Offer %@", offer);
+            
+            NSString *sdp = [offer objectForKey:@"sdp"];
+            //            ALog(@"%@", sdp);
+            RTCSessionDescription *remoteDescription = [[RTCSessionDescription alloc] initWithType:[offer objectForKey:@"type"] sdp:sdp];
+            ALog(@"Description: %@", remoteDescription);
+            [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
+            [self.peerConnection createAnswerWithDelegate:self constraints:[self defaultOfferConstraints]];
+        }];
+        
+        [self.privateChannel bindToEventNamed:@"client-answer" handleWithBlock:^(PTPusherEvent *event) {
+            NSLog(@"Client-Answer");
+        }];
+        
+        [self.privateChannel bindToEventNamed:@"client-icecandidate" handleWithBlock:^(PTPusherEvent *event) {
+            NSLog(@"Client-IceCandidate");
+        }];
+        
 //        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
 //        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.112:3000/pusher/auth"];
 //        [self.pusher connect];
@@ -269,7 +297,10 @@
         [self.peerConnection setLocalDescriptionWithDelegate:self
                                       sessionDescription:sdp];
         ALog(@"6 type: %@", sdp.type);
-        SessionDescriptionMessage *message = [[SessionDescriptionMessage alloc] initWithDescription:sdp];
+        NSString *eventName = [NSString stringWithFormat:@"client-%@", sdp.type];
+        NSDictionary *message = [NSDictionary dictionaryWithObjectsAndKeys:sdp.type, @"type", sdp.description, @"sdp", nil];
+        [self.privateChannel triggerEventNamed:eventName data:message];
+//        SessionDescriptionMessage *message = [[SessionDescriptionMessage alloc] initWithDescription:sdp];
         
 //        [self sendSignalingMessage:message];
     });
