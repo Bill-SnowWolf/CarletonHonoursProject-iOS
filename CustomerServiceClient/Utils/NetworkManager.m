@@ -12,11 +12,14 @@
 
 + (void)sendServiceRequestWithCompletionHandler:(void (^)(NSDictionary *))completion {
 //    NSString *credential = [[[NSString alloc] initWithFormat:@"%@:%@", email, password] base64EncodedString];
-    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *requestDict = @{
+        @"device_token": [userDefaults objectForKey:@"deviceToken"]
+    };
 //    NSDictionary *requestDict = [[NSDictionary alloc] initWithObjectsAndKeys:credential, @"user", nil];
-//    NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestDict options:0 error:nil];
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestDict options:0 error:nil];
     
-    NSURLRequest *request = [NetworkManager createRequestWithMethod:@"POST" data:nil api:@"/api/service_calls"];
+    NSURLRequest *request = [NetworkManager createRequestWithMethod:@"POST" data:requestData api:@"/api/service_calls"];
     
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {

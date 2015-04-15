@@ -52,14 +52,6 @@
                                                             delegate:self];
         
         isInitiator = NO;
-        
-        
-        
-        
-//        [channel bindToEventNamed:@"pusher:subscription_succeeded" handleWithBlock:^(PTPusherEvent *event) {
-//            NSLog(@"Subscription succeeded");
-//        }];
-        
     }
     return self;
 }
@@ -82,6 +74,10 @@
     [self.peerConnection addStream:self.localMediaStream];
     
     [self request];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    self.peerConnection = nil;
 }
 
 - (void)makeCall:(NSInteger)roomId {
@@ -126,7 +122,7 @@
     [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             if ([responseDict[@"code"] isEqualToString:@"AVAILABLE"]) {
-                [self makeCall:[responseDict[@"id"] integerValue]];
+                [self makeCall:[responseDict[@"room"] integerValue]];
             } else {
                 ALog(@"Please Wait...");
             }

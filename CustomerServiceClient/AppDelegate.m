@@ -56,6 +56,8 @@
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(\\s|<|>)" options:NSRegularExpressionCaseInsensitive error:NULL];
     NSString *deviceTokenStr = [regex stringByReplacingMatchesInString:[deviceToken description] options:0 range:NSMakeRange(0, [[deviceToken description] length]) withTemplate:@""];
     NSLog(@"My toke is: %@", deviceTokenStr);
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:deviceTokenStr forKey:@"deviceToken"];
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
