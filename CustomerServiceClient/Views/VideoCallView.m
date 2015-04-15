@@ -21,6 +21,7 @@ static CGFloat const kLocalVideoViewPadding = 8;
     CGSize _localVideoSize;
     CGSize _remoteVideoSize;
 }
+@property (nonatomic) UITextView *statusTextView;
 @end
 
 @implementation VideoCallView
@@ -36,16 +37,22 @@ static CGFloat const kLocalVideoViewPadding = 8;
         _localVideoView.delegate = self;
         [self addSubview:_localVideoView];
         
-        _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _statusLabel.font = [UIFont fontWithName:@"Roboto" size:16];
-        _statusLabel.textColor = [UIColor whiteColor];
-        [self addSubview:_statusLabel];
+//        _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+//        _statusLabel.font = [UIFont fontWithName:@"Roboto" size:16];
+//        _statusLabel.textColor = [UIColor whiteColor];
+//        [self addSubview:_statusLabel];
+        
+        self.statusTextView = [[UITextView alloc] initWithFrame:self.bounds];
+        self.statusTextView.userInteractionEnabled = NO;
+        self.statusTextView.scrollEnabled = YES;
+        [self addSubview:self.statusTextView];
     }
     return self;
 }
 
 - (void)layoutSubviews {
     CGRect bounds = self.bounds;
+    self.statusTextView.frame = bounds;
     if (_remoteVideoSize.width > 0 && _remoteVideoSize.height > 0) {
         // Aspect fill remote video into bounds.
         CGRect remoteVideoFrame =
@@ -60,11 +67,11 @@ static CGFloat const kLocalVideoViewPadding = 8;
         }
         remoteVideoFrame.size.height *= scale;
         remoteVideoFrame.size.width *= scale;
-        _remoteVideoView.frame = remoteVideoFrame;
-        _remoteVideoView.center =
-        CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+//        _remoteVideoView.frame = remoteVideoFrame;
+//        _remoteVideoView.center =
+//        CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
     } else {
-        _remoteVideoView.frame = bounds;
+//        _remoteVideoView.frame = bounds;
     }
     
     CGRect localVideoFrame = CGRectZero;
@@ -76,9 +83,14 @@ static CGFloat const kLocalVideoViewPadding = 8;
     localVideoFrame.size.height = kLocalVideoViewHeight;
     _localVideoView.frame = localVideoFrame;
     
-    [_statusLabel sizeToFit];
-    _statusLabel.center =
-    CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+//    [_statusLabel sizeToFit];
+//    _statusLabel.center =
+//    CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+}
+
+- (void)appendStatus:(NSString *)status {
+    NSString *newStatus = [NSString stringWithFormat:@"%@\n%@", self.statusTextView.text, status];
+    self.statusTextView.text = newStatus;
 }
 
 #pragma mark - RTCEAGLVideoViewDelegate
@@ -86,7 +98,8 @@ static CGFloat const kLocalVideoViewPadding = 8;
 - (void)videoView:(RTCEAGLVideoView*)videoView didChangeVideoSize:(CGSize)size {
     if (videoView == _localVideoView) {
         _localVideoSize = size;
-    } else if (videoView == _remoteVideoView) {
+    }
+    else if (videoView == _remoteVideoView) {
         _remoteVideoSize = size;
     }
     [self setNeedsLayout];

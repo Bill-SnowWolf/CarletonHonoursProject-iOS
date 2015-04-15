@@ -20,25 +20,7 @@
 @implementation ViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-
-//    self.client = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:NO];
-//    self.client.authorizationURL = [NSURL URLWithString:@"http://172.17.63.203:3000/pusher/auth_video"];
-//    [self.client connect];
-//    
-//    PTPusherPrivateChannel *channel = [self.client subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
-//    PTPusherChannel *channel = [self.client subscribeToChannelNamed:@"test"];
-    
-
-//    [channel bindToEventNamed:@"pusher:subscription_succeeded" handleWithBlock:^(PTPusherEvent *event) {
-//        NSLog(@"Subscription succeeded");
-//    }];
-//    [channel bindToEventNamed:@"message" handleWithBlock:^(PTPusherEvent *event) {
-//        // channelEvent.data is a NSDictianary of the JSON object received
-//        NSString *message = [event.data objectForKey:@"text"];
-//        NSLog(@"message received: %@", event.data);
-//    }];
-    
+    [super viewDidLoad];    
 }
 
 - (IBAction)prepare:(id)sender {

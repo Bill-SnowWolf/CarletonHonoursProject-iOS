@@ -11,7 +11,9 @@
 
 @interface VideoCallView : UIView
 
-@property (nonatomic, readonly) UILabel *statusLabel;
+//@property (nonatomic, readonly) UILabel *statusLabel;
 @property (nonatomic, readonly) RTCEAGLVideoView *localVideoView;
 @property (nonatomic, readonly) RTCEAGLVideoView *remoteVideoView;
+
+- (void)appendStatus:(NSString *)status;
 @end

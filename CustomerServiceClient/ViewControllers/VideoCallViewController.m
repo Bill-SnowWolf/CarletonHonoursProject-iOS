@@ -68,7 +68,7 @@
     // Initialize WebRTC Views
     self.videoCallView = [[VideoCallView alloc] initWithFrame:CGRectZero];
     self.videoCallView.backgroundColor = [UIColor redColor];
-    self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
+    [self.videoCallView appendStatus:@"Looking for available representatives..."];
     self.view = self.videoCallView;
     
     self.localMediaStream = [self createLocalMediaStream];
@@ -83,11 +83,12 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"com.carleton.webrtc.newuser" object:nil];
+    [self disconnect];
+}
+
+- (void)disconnect {
+    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
     
-    if (self.started) {
-        ALog(@"1");
-        [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
-    }
     if (self.pusher != nil) {
         [self.pusher disconnect];
     }
@@ -101,13 +102,16 @@
         localVideoTrack = nil;
         [self.videoCallView.localVideoView renderFrame:nil];
     }
-
+    
     self.peerConnection = nil;
     self.pusher = nil;
 }
 
 - (void)makeCall:(NSInteger)roomId {
     self.started = YES;
+    
+    NSString *status = [NSString stringWithFormat:@"Representative %ld is picking your call. Connecting...", (long)roomId];
+    [self.videoCallView appendStatus:status];
     
     // Initialize Pusher Signaling
     self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
@@ -147,7 +151,6 @@
 }
 
 - (void)newRepresentative:(NSNotification *)notif {
-    ALog(@"New Representative: %@", notif);
     NSDictionary *obj = [notif object];
     self.roomNumber = [obj[@"room"] integerValue];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Representative available, please confirm to connect or cancel" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
@@ -163,7 +166,8 @@
             if ([responseDict[@"code"] isEqualToString:@"AVAILABLE"]) {
                 [self makeCall:[responseDict[@"room"] integerValue]];
             } else {
-                ALog(@"Please Wait...");
+                NSString *status = [NSString stringWithFormat:@"Sorry, all representatives are on the line. Please wait... There are %@ in front of you", responseDict[@"waiting_count"]];
+                [self.videoCallView appendStatus:status];
             }
         });
     }];
@@ -171,12 +175,8 @@
 
 // Get Stream
 - (RTCMediaStream *)createLocalMediaStream {
-    ALog(@"");
     RTCMediaStream* localStream = [self.factory mediaStreamWithLabel:@"ARDAMS"];
     
-    // The iOS simulator doesn't provide any sort of camera capture
-    // support or emulation (http://goo.gl/rHAnC1) so don't bother
-    // trying to open a local stream.
 #if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
     NSString *cameraID = nil;
     for (AVCaptureDevice *captureDevice in
@@ -193,7 +193,6 @@
     RTCVideoSource *videoSource = [self.factory videoSourceWithCapturer:capturer
                           constraints:mediaConstraints];
     localVideoTrack = [self.factory videoTrackWithID:@"ARDAMSv0" source:videoSource];
-    ALog(@"%@", localVideoTrack);
     if (localVideoTrack) {
         [localStream addVideoTrack:localVideoTrack];
     }
@@ -207,14 +206,17 @@
 
 - (NSString *)statusTextForState:(RTCICEConnectionState)state {
     switch (state) {
-        case RTCICEConnectionNew:
-        case RTCICEConnectionChecking:
-            return @"Connecting...";
+//        case RTCICEConnectionNew:
+//        case RTCICEConnectionChecking:
+//            return @"Connecting...";
         case RTCICEConnectionConnected:
-        case RTCICEConnectionCompleted:
-        case RTCICEConnectionFailed:
+            return @"You are connected to representative now!";
+//        case RTCICEConnectionCompleted:
+//        case RTCICEConnectionFailed:
         case RTCICEConnectionDisconnected:
-        case RTCICEConnectionClosed:
+            return @"Your call is disconnected.";
+//        case RTCICEConnectionClosed:
+        default:
             return nil;
     }
 }
@@ -278,7 +280,6 @@
         if (stream.videoTracks.count) {
             remoteVideoTrack = stream.videoTracks[0];
             [remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
-        //      [_delegate appClient:self didReceiveRemoteVideoTrack:videoTrack];
         }
     });
 }
@@ -298,8 +299,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         ALog(@"ICE state changed: %d", newState);
         self.connectionState = newState;
-        if (newState == RTCICEConnectionConnected) {
-            [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
+        switch (newState) {
+            case RTCICEConnectionConnected:
+                [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
+                [self.videoCallView appendStatus:[self statusTextForState:newState]];
+                break;
+            default:
+                break;
+                
         }
     });
 }
@@ -316,9 +323,6 @@
         NSDictionary *dict = [candidate JSONDictionary];
         ALog(@"8 %@", dict);
         [self.privateChannel triggerEventNamed:@"client-icecandidate" data:dict];
-//        ARDICECandidateMessage *message =
-//        [[ARDICECandidateMessage alloc] initWithCandidate:candidate];
-//        [self sendSignalingMessage:message];
     });
 }
 
