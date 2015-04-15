@@ -82,6 +82,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
+//    [self.privateChannel triggerEventNamed:@"client-finished" data:@{}];
+    [self.peerConnection close];
     self.peerConnection = nil;
 }
 
