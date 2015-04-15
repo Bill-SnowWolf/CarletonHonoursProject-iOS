@@ -32,7 +32,7 @@
 }
 @property (nonatomic) VideoCallView *videoCallView;
 @property (nonatomic) RTCPeerConnectionFactory *factory;
-@property (nonatomic) RTCMediaStream *localMediaStream;
+@property (nonatomic, weak) RTCMediaStream *localMediaStream;
 @property (nonatomic) RTCPeerConnection *peerConnection;
 @property (nonatomic) PTPusher *pusher;
 @property (nonatomic) PTPusherPrivateChannel *privateChannel;
@@ -71,8 +71,6 @@
     self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
     self.view = self.videoCallView;
     
-    ALog(@"Load View");
-    
     self.localMediaStream = [self createLocalMediaStream];
     [self.peerConnection addStream:self.localMediaStream];
     
@@ -87,15 +85,25 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"com.carleton.webrtc.newuser" object:nil];
     
     if (self.started) {
+        ALog(@"1");
         [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
-
-        [self.pusher disconnect];
-        self.pusher = nil;
-    
-        if (self.peerConnection != nil) {
-            self.peerConnection = nil;
-        }
     }
+    if (self.pusher != nil) {
+        [self.pusher disconnect];
+    }
+    if (remoteVideoTrack) {
+        [remoteVideoTrack removeRenderer:self.videoCallView.remoteVideoView];
+        remoteVideoTrack = nil;
+        [self.videoCallView.remoteVideoView renderFrame:nil];
+    }
+    if (localVideoTrack) {
+        [localVideoTrack removeRenderer:self.videoCallView.localVideoView];
+        localVideoTrack = nil;
+        [self.videoCallView.localVideoView renderFrame:nil];
+    }
+
+    self.peerConnection = nil;
+    self.pusher = nil;
 }
 
 - (void)makeCall:(NSInteger)roomId {
