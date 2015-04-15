@@ -159,8 +159,6 @@
     return localStream;
 }
 
-
-
 - (NSString *)statusTextForState:(RTCICEConnectionState)state {
     switch (state) {
         case RTCICEConnectionNew:
@@ -175,7 +173,6 @@
     }
 }
 
-
 #pragma mark - Defaults
 
 - (RTCMediaConstraints *)defaultMediaStreamConstraints {
@@ -184,9 +181,6 @@
 }
 
 - (RTCMediaConstraints *)defaultPeerConnectionConstraints {
-//    if (_defaultPeerConnectionConstraints) {
-//        return _defaultPeerConnectionConstraints;
-//    }
     NSArray *optionalConstraints = @[
                                      [[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"true"]
                                      ];
