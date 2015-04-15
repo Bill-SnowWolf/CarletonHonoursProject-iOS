@@ -76,6 +76,11 @@
         
         [self.privateChannel bindToEventNamed:@"client-answer" handleWithBlock:^(PTPusherEvent *event) {
             NSLog(@"Client-Answer");
+            NSDictionary *answer = [NSDictionary dictionaryWithDictionary:event.data];
+            NSString *sdp = [answer objectForKeyedSubscript:@"sdp"];
+            
+            RTCSessionDescription *remoteDescription = [[RTCSessionDescription alloc] initWithType:answer[@"type"] sdp:sdp];
+            [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
         }];
         
         [self.privateChannel bindToEventNamed:@"client-icecandidate" handleWithBlock:^(PTPusherEvent *event) {
