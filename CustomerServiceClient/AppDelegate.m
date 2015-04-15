@@ -18,7 +18,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [RTCPeerConnectionFactory initializeSSL];
-    // Override point for customization after application launch.
+
+    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+    [application registerForRemoteNotifications];
+
     return YES;
 }
 
@@ -46,6 +49,34 @@
     [self saveContext];
     [RTCPeerConnectionFactory deinitializeSSL];    
 }
+
+#pragma mark - Push Notification
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(\\s|<|>)" options:NSRegularExpressionCaseInsensitive error:NULL];
+    NSString *deviceTokenStr = [regex stringByReplacingMatchesInString:[deviceToken description] options:0 range:NSMakeRange(0, [[deviceToken description] length]) withTemplate:@""];
+    NSLog(@"My toke is: %@", deviceTokenStr);
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    NSLog(@"Failed to get token, error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"Receive Notification: %@", userInfo);
+    //    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:10];
+}
+
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+//{
+//    NSLog(@"Receive Notification in background: %@", userInfo);
+//    //    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:10];
+////    [[[Account instance] contacts] syncFriendRequestsWithCompletion:nil];
+//    completionHandler(UIBackgroundFetchResultNewData);
+//}
+
 
 #pragma mark - Core Data stack
 
