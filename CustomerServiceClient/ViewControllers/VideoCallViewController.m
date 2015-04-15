@@ -169,7 +169,6 @@
     if (localVideoTrack) {
         [localStream addVideoTrack:localVideoTrack];
     }
-//    [_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
 #endif
     [localStream addAudioTrack:[self.factory audioTrackWithID:@"ARDAMSa0"]];
     
