@@ -26,6 +26,7 @@
 		CFA5BE421AD8B9BF001154F4 /* PTPusherMockConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE311AD8B9BF001154F4 /* PTPusherMockConnection.m */; };
 		CFA5BE431AD8B9BF001154F4 /* PTTargetActionEventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE331AD8B9BF001154F4 /* PTTargetActionEventListener.m */; };
 		CFA5BE441AD8B9BF001154F4 /* PTURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE341AD8B9BF001154F4 /* PTURLRequestOperation.m */; };
+		CFB80F481ADDB110000D7A78 /* RTCICECandidate+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB80F471ADDB110000D7A78 /* RTCICECandidate+JSON.m */; };
 		CFC14DD81ACD8F2C009EC9B8 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DD71ACD8F2C009EC9B8 /* libc++.dylib */; };
 		CFC14DDA1ACD8F39009EC9B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DD91ACD8F39009EC9B8 /* libicucore.dylib */; };
 		CFC14DDC1ACD8F4A009EC9B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DDB1ACD8F4A009EC9B8 /* Security.framework */; };
@@ -138,6 +139,8 @@
 		CFA5BE331AD8B9BF001154F4 /* PTTargetActionEventListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTTargetActionEventListener.m; sourceTree = "<group>"; };
 		CFA5BE341AD8B9BF001154F4 /* PTURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTURLRequestOperation.m; sourceTree = "<group>"; };
 		CFA5BE351AD8B9BF001154F4 /* Pusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pusher.h; sourceTree = "<group>"; };
+		CFB80F461ADDB110000D7A78 /* RTCICECandidate+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RTCICECandidate+JSON.h"; path = "Utils/RTCICECandidate+JSON.h"; sourceTree = "<group>"; };
+		CFB80F471ADDB110000D7A78 /* RTCICECandidate+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RTCICECandidate+JSON.m"; path = "Utils/RTCICECandidate+JSON.m"; sourceTree = "<group>"; };
 		CFC14DD71ACD8F2C009EC9B8 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		CFC14DD91ACD8F39009EC9B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		CFC14DDB1ACD8F4A009EC9B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -326,6 +329,15 @@
 			path = "Private Headers";
 			sourceTree = "<group>";
 		};
+		CFB80F451ADDB0E6000D7A78 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CFB80F461ADDB110000D7A78 /* RTCICECandidate+JSON.h */,
+				CFB80F471ADDB110000D7A78 /* RTCICECandidate+JSON.m */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		CFC14DF51ACD8FDC009EC9B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +392,7 @@
 		CFD86A021AB4953300B7DBF5 /* CustomerServiceClient */ = {
 			isa = PBXGroup;
 			children = (
+				CFB80F451ADDB0E6000D7A78 /* Utils */,
 				CFC14DF71ACD8FEA009EC9B8 /* Controllers */,
 				CFC14DF61ACD8FE2009EC9B8 /* Models */,
 				CFC14DF51ACD8FDC009EC9B8 /* Views */,
@@ -570,6 +583,7 @@
 				CFA5BE441AD8B9BF001154F4 /* PTURLRequestOperation.m in Sources */,
 				CFD86A061AB4953300B7DBF5 /* main.m in Sources */,
 				CFC14DFA1ACD9077009EC9B8 /* VideoCallView.m in Sources */,
+				CFB80F481ADDB110000D7A78 /* RTCICECandidate+JSON.m in Sources */,
 				CFA5BE411AD8B9BF001154F4 /* PTPusherEventDispatcher.m in Sources */,
 				CFA5BE3A1AD8B9BF001154F4 /* PTPusher+Testing.m in Sources */,
 			);

@@ -17,6 +17,7 @@
 #import "RTCPair.h"
 #import "RTCPeerConnection.h"
 #import "RTCSessionDescriptionDelegate.h"
+#import "RTCICECandidate+JSON.h"
 #import "SignalingMessage.h"
 #import "Pusher.h"
 
@@ -42,19 +43,21 @@
     if (self) {
         self.factory = [[RTCPeerConnectionFactory alloc] init];
         
+        
+        
         // Create Instance of RTCPeerConnection
         RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
         self.peerConnection = [_factory peerConnectionWithICEServers:nil
                                                          constraints:constraints
                                                             delegate:self];
         
-        [self.peerConnection addStream:self.localMediaStream];        
+
         
         
         // Initialize Pusher Signaling
         
         self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
-        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.202:3000/pusher/auth_video"];
+        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.119:3000/pusher/auth_video"];
         [self.pusher connect];
         
         self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
@@ -76,7 +79,13 @@
         }];
         
         [self.privateChannel bindToEventNamed:@"client-icecandidate" handleWithBlock:^(PTPusherEvent *event) {
-            NSLog(@"Client-IceCandidate");
+            NSLog(@"Client-IceCandidate %@", event.data);
+            
+            NSDictionary *jsonDictionary = [NSDictionary dictionaryWithDictionary:event.data];
+            
+            RTCICECandidate *iceCandidate = [RTCICECandidate candidateFromJSONDictionary:jsonDictionary];
+            [self.peerConnection addICECandidate:iceCandidate];
+            
         }];
         
 //        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
@@ -112,6 +121,7 @@
     ALog(@"Load View");
     
     self.localMediaStream = [self createLocalMediaStream];
+    [self.peerConnection addStream:self.localMediaStream];
     
 }
 
@@ -228,10 +238,11 @@
         ALog(@"Received %lu video tracks and %lu audio tracks",
               (unsigned long)stream.videoTracks.count,
               (unsigned long)stream.audioTracks.count);
-        //    if (stream.videoTracks.count) {
-        //      RTCVideoTrack *videoTrack = stream.videoTracks[0];
+        if (stream.videoTracks.count) {
+            remoteVideoTrack = stream.videoTracks[0];
+            [remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
         //      [_delegate appClient:self didReceiveRemoteVideoTrack:videoTrack];
-        //    }
+        }
     });
 }
 
@@ -262,7 +273,9 @@
        gotICECandidate:(RTCICECandidate *)candidate {
     // onicecandidate
     dispatch_async(dispatch_get_main_queue(), ^{
-        ALog(@"8");
+        NSDictionary *dict = [candidate JSONDictionary];
+        ALog(@"8 %@", dict);
+        [self.privateChannel triggerEventNamed:@"client-icecandidate" data:dict];
 //        ARDICECandidateMessage *message =
 //        [[ARDICECandidateMessage alloc] initWithCandidate:candidate];
 //        [self sendSignalingMessage:message];
