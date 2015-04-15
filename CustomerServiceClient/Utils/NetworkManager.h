@@ -10,4 +10,5 @@
 
 @interface NetworkManager : NSObject
 + (void)sendServiceRequestWithCompletionHandler:(void(^)(NSDictionary *responseDict))completion;
++ (void)updateCallStatusWithId:(NSInteger)callId room:(NSInteger)room status:(NSString *)status;
 @end

@@ -36,6 +36,10 @@
 @property (nonatomic) RTCPeerConnection *peerConnection;
 @property (nonatomic) PTPusher *pusher;
 @property (nonatomic) PTPusherPrivateChannel *privateChannel;
+@property (nonatomic) RTCICEConnectionState connectionState;
+
+@property (nonatomic) NSInteger roomNumber;
+@property (nonatomic) NSInteger callId;
 @end
 
 @implementation VideoCallViewController
@@ -77,6 +81,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
     self.peerConnection = nil;
 }
 
@@ -121,6 +126,9 @@
 - (void)request {
     [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
         dispatch_async(dispatch_get_main_queue(), ^() {
+            self.roomNumber = [responseDict[@"room"] integerValue];
+            self.callId = [responseDict[@"id"] integerValue];
+            
             if ([responseDict[@"code"] isEqualToString:@"AVAILABLE"]) {
                 [self makeCall:[responseDict[@"room"] integerValue]];
             } else {
@@ -250,9 +258,12 @@
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
   iceConnectionChanged:(RTCICEConnectionState)newState {
-    ALog(@"ICE state changed: %d", newState);
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [_delegate appClient:self didChangeConnectionState:newState];
+        ALog(@"ICE state changed: %d", newState);
+        self.connectionState = newState;
+        if (newState == RTCICEConnectionConnected) {
+            [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
+        }
     });
 }
 
@@ -288,15 +299,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error) {
             ALog(@"Failed to create session description. Error: %@", error);
-//            [self disconnect];
-//            NSDictionary *userInfo = @{
-//                                       NSLocalizedDescriptionKey: @"Failed to create session description.",
-//                                       };
-//            NSError *sdpError =
-//            [[NSError alloc] initWithDomain:kARDAppClientErrorDomain
-//                                       code:kARDAppClientErrorCreateSDP
-//                                   userInfo:userInfo];
-//            [_delegate appClient:self didError:sdpError];
             return;
         }
         [self.peerConnection setLocalDescriptionWithDelegate:self
@@ -313,15 +315,6 @@ didSetSessionDescriptionWithError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error) {
             ALog(@"Failed to set session description. Error: %@", error);
-//            [self disconnect];
-//            NSDictionary *userInfo = @{
-//                                       NSLocalizedDescriptionKey: @"Failed to set session description.",
-//                                       };
-//            NSError *sdpError =
-//            [[NSError alloc] initWithDomain:kARDAppClientErrorDomain
-//                                       code:kARDAppClientErrorSetSDP
-//                                   userInfo:userInfo];
-//            [_delegate appClient:self didError:sdpError];
             return;
         }
         // If we're answering and we've just set the remote offer we need to create
