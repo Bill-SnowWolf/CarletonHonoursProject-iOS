@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF0A213E1ADDF681001802A3 /* RTCSessionDescription+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0A213D1ADDF681001802A3 /* RTCSessionDescription+JSON.m */; };
 		CF9636CF1AD976DB00D1279B /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */; };
-		CF9636D41AD98CF300D1279B /* SignalingMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9636D31AD98CF300D1279B /* SignalingMessage.m */; };
-		CF9636D71AD990CD00D1279B /* RTCSessionDescription+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9636D61AD990CD00D1279B /* RTCSessionDescription+JSON.m */; };
 		CFA5BE0D1AD8B91D001154F4 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA5BE0C1AD8B91D001154F4 /* libWebRTC.a */; };
 		CFA5BE361AD8B9BF001154F4 /* NSDictionary+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE0F1AD8B9BF001154F4 /* NSDictionary+QueryString.m */; };
 		CFA5BE371AD8B9BF001154F4 /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE101AD8B9BF001154F4 /* NSString+Hashing.m */; };
@@ -65,6 +64,8 @@
 /* Begin PBXFileReference section */
 		7D7F5BD210B94806AE6B0B5B /* Pods-CustomerServiceClient.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerServiceClient.xcconfig"; path = "Pods/Pods-CustomerServiceClient.xcconfig"; sourceTree = "<group>"; };
 		C2E2C5E511BF5A3DBCB79F9C /* Pods-CustomerServiceClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerServiceClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-CustomerServiceClient/Pods-CustomerServiceClient.release.xcconfig"; sourceTree = "<group>"; };
+		CF0A213C1ADDF681001802A3 /* RTCSessionDescription+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RTCSessionDescription+JSON.h"; path = "Utils/RTCSessionDescription+JSON.h"; sourceTree = "<group>"; };
+		CF0A213D1ADDF681001802A3 /* RTCSessionDescription+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RTCSessionDescription+JSON.m"; path = "Utils/RTCSessionDescription+JSON.m"; sourceTree = "<group>"; };
 		CF35EC781ACF2E1E00D75D66 /* RTCAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCAudioSource.h; sourceTree = "<group>"; };
 		CF35EC791ACF2E1E00D75D66 /* RTCAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCAudioTrack.h; sourceTree = "<group>"; };
 		CF35EC7A1ACF2E1E00D75D66 /* RTCDataChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCDataChannel.h; sourceTree = "<group>"; };
@@ -96,10 +97,6 @@
 		CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoCallViewController.m; path = ViewControllers/VideoCallViewController.m; sourceTree = "<group>"; };
 		CF9636D01AD977EB00D1279B /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		CF9636D11AD9782500D1279B /* CSC-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CSC-Prefix.pch"; sourceTree = "<group>"; };
-		CF9636D21AD98CF300D1279B /* SignalingMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignalingMessage.h; path = Models/SignalingMessage.h; sourceTree = "<group>"; };
-		CF9636D31AD98CF300D1279B /* SignalingMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignalingMessage.m; path = Models/SignalingMessage.m; sourceTree = "<group>"; };
-		CF9636D51AD990CD00D1279B /* RTCSessionDescription+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RTCSessionDescription+JSON.h"; path = "Models/RTCSessionDescription+JSON.h"; sourceTree = "<group>"; };
-		CF9636D61AD990CD00D1279B /* RTCSessionDescription+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RTCSessionDescription+JSON.m"; path = "Models/RTCSessionDescription+JSON.m"; sourceTree = "<group>"; };
 		CFA5BE0C1AD8B91D001154F4 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = CustomerServiceClient/libWebRTC.a; sourceTree = "<group>"; };
 		CFA5BE0F1AD8B9BF001154F4 /* NSDictionary+QueryString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+QueryString.m"; sourceTree = "<group>"; };
 		CFA5BE101AD8B9BF001154F4 /* NSString+Hashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hashing.m"; sourceTree = "<group>"; };
@@ -334,6 +331,8 @@
 			children = (
 				CFB80F461ADDB110000D7A78 /* RTCICECandidate+JSON.h */,
 				CFB80F471ADDB110000D7A78 /* RTCICECandidate+JSON.m */,
+				CF0A213C1ADDF681001802A3 /* RTCSessionDescription+JSON.h */,
+				CF0A213D1ADDF681001802A3 /* RTCSessionDescription+JSON.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -350,10 +349,6 @@
 		CFC14DF61ACD8FE2009EC9B8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CF9636D21AD98CF300D1279B /* SignalingMessage.h */,
-				CF9636D31AD98CF300D1279B /* SignalingMessage.m */,
-				CF9636D51AD990CD00D1279B /* RTCSessionDescription+JSON.h */,
-				CF9636D61AD990CD00D1279B /* RTCSessionDescription+JSON.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -572,18 +567,17 @@
 				CFA5BE431AD8B9BF001154F4 /* PTTargetActionEventListener.m in Sources */,
 				CF9636CF1AD976DB00D1279B /* VideoCallViewController.m in Sources */,
 				CFA5BE401AD8B9BF001154F4 /* PTPusherEvent.m in Sources */,
-				CF9636D71AD990CD00D1279B /* RTCSessionDescription+JSON.m in Sources */,
 				CFA5BE361AD8B9BF001154F4 /* NSDictionary+QueryString.m in Sources */,
 				CFA5BE3E1AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.m in Sources */,
 				CFA5BE421AD8B9BF001154F4 /* PTPusherMockConnection.m in Sources */,
 				CFD86A0F1AB4953300B7DBF5 /* ViewController.m in Sources */,
 				CFA5BE3F1AD8B9BF001154F4 /* PTPusherConnection.m in Sources */,
 				CFA5BE371AD8B9BF001154F4 /* NSString+Hashing.m in Sources */,
-				CF9636D41AD98CF300D1279B /* SignalingMessage.m in Sources */,
 				CFA5BE441AD8B9BF001154F4 /* PTURLRequestOperation.m in Sources */,
 				CFD86A061AB4953300B7DBF5 /* main.m in Sources */,
 				CFC14DFA1ACD9077009EC9B8 /* VideoCallView.m in Sources */,
 				CFB80F481ADDB110000D7A78 /* RTCICECandidate+JSON.m in Sources */,
+				CF0A213E1ADDF681001802A3 /* RTCSessionDescription+JSON.m in Sources */,
 				CFA5BE411AD8B9BF001154F4 /* PTPusherEventDispatcher.m in Sources */,
 				CFA5BE3A1AD8B9BF001154F4 /* PTPusher+Testing.m in Sources */,
 			);

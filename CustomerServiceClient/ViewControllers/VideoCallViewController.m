@@ -18,7 +18,7 @@
 #import "RTCPeerConnection.h"
 #import "RTCSessionDescriptionDelegate.h"
 #import "RTCICECandidate+JSON.h"
-#import "SignalingMessage.h"
+#import "RTCSessionDescription+JSON.h"
 #import "Pusher.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -27,6 +27,7 @@
 {
     RTCVideoTrack *localVideoTrack;
     RTCVideoTrack *remoteVideoTrack;
+    BOOL isInitiator;
 }
 @property (nonatomic) VideoCallView *videoCallView;
 @property (nonatomic) RTCPeerConnectionFactory *factory;
@@ -43,15 +44,13 @@
     if (self) {
         self.factory = [[RTCPeerConnectionFactory alloc] init];
         
-        
-        
         // Create Instance of RTCPeerConnection
         RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
         self.peerConnection = [_factory peerConnectionWithICEServers:nil
                                                          constraints:constraints
                                                             delegate:self];
         
-
+        isInitiator = NO;
         
         
         // Initialize Pusher Signaling
@@ -63,23 +62,16 @@
         self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
         
         [self.privateChannel bindToEventNamed:@"client-offer" handleWithBlock:^(PTPusherEvent *event) {
+            // Receive Offer from web
             NSDictionary *offer = [NSDictionary dictionaryWithDictionary:event.data];
             ALog(@"Client-Offer %@", offer);
-            
-            NSString *sdp = [offer objectForKey:@"sdp"];
-            //            ALog(@"%@", sdp);
-            RTCSessionDescription *remoteDescription = [[RTCSessionDescription alloc] initWithType:[offer objectForKey:@"type"] sdp:sdp];
-            ALog(@"Description: %@", remoteDescription);
+            RTCSessionDescription *remoteDescription = [RTCSessionDescription descriptionFromJSONDictionary:offer];
             [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
-            [self.peerConnection createAnswerWithDelegate:self constraints:[self defaultOfferConstraints]];
         }];
         
         [self.privateChannel bindToEventNamed:@"client-answer" handleWithBlock:^(PTPusherEvent *event) {
-            NSLog(@"Client-Answer");
             NSDictionary *answer = [NSDictionary dictionaryWithDictionary:event.data];
-            NSString *sdp = [answer objectForKeyedSubscript:@"sdp"];
-            
-            RTCSessionDescription *remoteDescription = [[RTCSessionDescription alloc] initWithType:answer[@"type"] sdp:sdp];
+            RTCSessionDescription *remoteDescription = [RTCSessionDescription descriptionFromJSONDictionary:answer];
             [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
         }];
         
@@ -92,14 +84,6 @@
             [self.peerConnection addICECandidate:iceCandidate];
             
         }];
-        
-//        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
-//        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.112:3000/pusher/auth"];
-//        [self.pusher connect];
-        
-//        PTPusherPresenceChannel *channel = [self.client subscribeToPresenceChannelNamed:@"lobby" delegate:self];
-//    PTPusherChannel *channel = [self.client subscribeToChannelNamed:@"test"];
-        
         
 //        [channel bindToEventNamed:@"pusher:subscription_succeeded" handleWithBlock:^(PTPusherEvent *event) {
 //            NSLog(@"Subscription succeeded");
@@ -119,7 +103,6 @@
     // Initialize WebRTC Views
     self.videoCallView = [[VideoCallView alloc] initWithFrame:CGRectZero];
     self.videoCallView.backgroundColor = [UIColor redColor];
-//    self.videoCallView.delegate = self;
     self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
     self.view = self.videoCallView;
     
@@ -127,10 +110,10 @@
     
     self.localMediaStream = [self createLocalMediaStream];
     [self.peerConnection addStream:self.localMediaStream];
-    
 }
 
 - (void)makeCall {
+    isInitiator = YES;
     [self.peerConnection createOfferWithDelegate:self constraints:[self defaultMediaStreamConstraints]];
 }
 
@@ -144,7 +127,6 @@
 - (RTCMediaStream *)createLocalMediaStream {
     ALog(@"");
     RTCMediaStream* localStream = [self.factory mediaStreamWithLabel:@"ARDAMS"];
-//    RTCVideoTrack* localVideoTrack = nil;
     
     // The iOS simulator doesn't provide any sort of camera capture
     // support or emulation (http://goo.gl/rHAnC1) so don't bother
@@ -315,11 +297,7 @@
                                       sessionDescription:sdp];
         ALog(@"6 type: %@", sdp.type);
         NSString *eventName = [NSString stringWithFormat:@"client-%@", sdp.type];
-        NSDictionary *message = [NSDictionary dictionaryWithObjectsAndKeys:sdp.type, @"type", sdp.description, @"sdp", nil];
-        [self.privateChannel triggerEventNamed:eventName data:message];
-//        SessionDescriptionMessage *message = [[SessionDescriptionMessage alloc] initWithDescription:sdp];
-        
-//        [self sendSignalingMessage:message];
+        [self.privateChannel triggerEventNamed:eventName data:[sdp JSONDictionary]];
     });
 }
 
@@ -327,8 +305,8 @@
 didSetSessionDescriptionWithError:(NSError *)error {
     ALog(@"5");
     dispatch_async(dispatch_get_main_queue(), ^{
-//        if (error) {
-//            NSLog(@"Failed to set session description. Error: %@", error);
+        if (error) {
+            ALog(@"Failed to set session description. Error: %@", error);
 //            [self disconnect];
 //            NSDictionary *userInfo = @{
 //                                       NSLocalizedDescriptionKey: @"Failed to set session description.",
@@ -338,17 +316,14 @@ didSetSessionDescriptionWithError:(NSError *)error {
 //                                       code:kARDAppClientErrorSetSDP
 //                                   userInfo:userInfo];
 //            [_delegate appClient:self didError:sdpError];
-//            return;
-//        }
-//        // If we're answering and we've just set the remote offer we need to create
-//        // an answer and set the local description.
-//        if (!_isInitiator && !_peerConnection.localDescription) {
-//            ALog(@"7");
-//            RTCMediaConstraints *constraints = [self defaultAnswerConstraints];
-//            [_peerConnection createAnswerWithDelegate:self
-//                                          constraints:constraints];
-//            
-//        }
+            return;
+        }
+        // If we're answering and we've just set the remote offer we need to create
+        // an answer and set the local description.
+        if (!isInitiator && !self.peerConnection.localDescription) {
+            ALog(@"7");
+            [self.peerConnection createAnswerWithDelegate:self constraints:[self defaultOfferConstraints]];
+        }
     });
 }
 
@@ -371,7 +346,7 @@ didSetSessionDescriptionWithError:(NSError *)error {
 {
     NSLog(@"[pusher] Pusher Connection failed with error: %@", error);
     if ([error.domain isEqualToString:(NSString *)kCFErrorDomainCFNetwork]) {
-        //        [self startReachabilityCheck];
+        
     }
 }
 
@@ -384,7 +359,7 @@ didSetSessionDescriptionWithError:(NSError *)error {
     }
     else {
         if (![error.domain isEqualToString:PTPusherErrorDomain]) {
-//            [self startReachabilityCheck];
+
         }
     }
 }
