@@ -67,17 +67,25 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"Receive Notification: %@", userInfo);
+    ALog(@"Receive Notification: %@", userInfo);
+    [self handleRemoteNotification:userInfo];
     //    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:10];
 }
 
-//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-//{
-//    NSLog(@"Receive Notification in background: %@", userInfo);
-//    //    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:10];
-////    [[[Account instance] contacts] syncFriendRequestsWithCompletion:nil];
-//    completionHandler(UIBackgroundFetchResultNewData);
-//}
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    ALog(@"Receive Notification in background: %@", userInfo);
+    [self handleRemoteNotification:userInfo];
+    completionHandler(UIBackgroundFetchResultNewData);
+    
+}
+
+- (void)handleRemoteNotification:(NSDictionary *)userInfo {
+    if ([[userInfo objectForKey:@"code"] isEqualToString:@"USER_AVAILABLE"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"com.carleton.webrtc.newuser" object:userInfo];
+    }
+}
+
 
 
 #pragma mark - Core Data stack

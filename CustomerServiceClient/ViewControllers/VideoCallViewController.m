@@ -37,6 +37,7 @@
 @property (nonatomic) PTPusher *pusher;
 @property (nonatomic) PTPusherPrivateChannel *privateChannel;
 @property (nonatomic) RTCICEConnectionState connectionState;
+@property (nonatomic) BOOL started;
 
 @property (nonatomic) NSInteger roomNumber;
 @property (nonatomic) NSInteger callId;
@@ -56,15 +57,13 @@
                                                             delegate:self];
         
         isInitiator = NO;
+        self.started = NO;
     }
     return self;
 }
 
 - (void)loadView {
     self.title = @"Video Call View Controller";
-    
-//    UIBarButtonItem *startBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Call" style:UIBarButtonItemStylePlain target:self action:@selector(makeCall)];
-//    self.navigationItem.rightBarButtonItem = startBarItem;
     
     // Initialize WebRTC Views
     self.videoCallView = [[VideoCallView alloc] initWithFrame:CGRectZero];
@@ -80,14 +79,28 @@
     [self request];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newRepresentative:) name:@"com.carleton.webrtc.newuser" object:nil];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
-    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
-//    [self.privateChannel triggerEventNamed:@"client-finished" data:@{}];
-    [self.peerConnection close];
-    self.peerConnection = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"com.carleton.webrtc.newuser" object:nil];
+    
+    if (self.started) {
+        [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
+
+        [self.pusher disconnect];
+        self.pusher = nil;
+    
+        if (self.peerConnection != nil) {
+            self.peerConnection = nil;
+        }
+    }
 }
 
 - (void)makeCall:(NSInteger)roomId {
+    self.started = YES;
+    
     // Initialize Pusher Signaling
     self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
     self.pusher.authorizationURL = [NSURL URLWithString:
@@ -125,6 +138,14 @@
     [self.peerConnection createOfferWithDelegate:self constraints:[self defaultMediaStreamConstraints]];
 }
 
+- (void)newRepresentative:(NSNotification *)notif {
+    ALog(@"New Representative: %@", notif);
+    NSDictionary *obj = [notif object];
+    self.roomNumber = [obj[@"room"] integerValue];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Representative available, please confirm to connect or cancel" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
+    [alertView show];
+}
+
 - (void)request {
     [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -139,11 +160,6 @@
         });
     }];
 }
-
-//- (void)viewDidLoad {
-//    [super viewDidLoad];
-//    // Do any additional setup after loading the view.
-//}
 
 // Get Stream
 - (RTCMediaStream *)createLocalMediaStream {
@@ -194,6 +210,17 @@
             return nil;
     }
 }
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        // Cancel
+    } else {
+        // Connect
+        [self makeCall:self.roomNumber];
+    }
+}
+
 
 #pragma mark - Defaults
 

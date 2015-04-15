@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VideoCallViewController : UIViewController
+@interface VideoCallViewController : UIViewController <UIAlertViewDelegate>
 //- (id)initWithRoomId:(NSInteger)roomId;
 
 @end
