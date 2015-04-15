@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Pusher.h"
-#import "PTPusherDelegate.h"
+//#import "Pusher.h"
+//#import "PTPusherDelegate.h"
 
-@interface ViewController : UIViewController <PTPusherDelegate>
+@interface ViewController : UIViewController //<PTPusherDelegate>
 
 
 @end

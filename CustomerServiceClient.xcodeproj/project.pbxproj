@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF0A213E1ADDF681001802A3 /* RTCSessionDescription+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0A213D1ADDF681001802A3 /* RTCSessionDescription+JSON.m */; };
+		CF5BD2A61ADEB9F2009F73A9 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5BD2A51ADEB9F2009F73A9 /* NetworkManager.m */; };
 		CF9636CF1AD976DB00D1279B /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */; };
 		CFA5BE0D1AD8B91D001154F4 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA5BE0C1AD8B91D001154F4 /* libWebRTC.a */; };
 		CFA5BE361AD8B9BF001154F4 /* NSDictionary+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE0F1AD8B9BF001154F4 /* NSDictionary+QueryString.m */; };
@@ -93,6 +94,8 @@
 		CF35EC901ACF2E1E00D75D66 /* RTCVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCVideoSource.h; sourceTree = "<group>"; };
 		CF35EC911ACF2E1E00D75D66 /* RTCVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCVideoTrack.h; sourceTree = "<group>"; };
 		CF35EDA11ACF934E00D75D66 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		CF5BD2A41ADEB9F2009F73A9 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkManager.h; path = Utils/NetworkManager.h; sourceTree = "<group>"; };
+		CF5BD2A51ADEB9F2009F73A9 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkManager.m; path = Utils/NetworkManager.m; sourceTree = "<group>"; };
 		CF9636CD1AD976DB00D1279B /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoCallViewController.h; path = ViewControllers/VideoCallViewController.h; sourceTree = "<group>"; };
 		CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoCallViewController.m; path = ViewControllers/VideoCallViewController.m; sourceTree = "<group>"; };
 		CF9636D01AD977EB00D1279B /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
@@ -333,6 +336,8 @@
 				CFB80F471ADDB110000D7A78 /* RTCICECandidate+JSON.m */,
 				CF0A213C1ADDF681001802A3 /* RTCSessionDescription+JSON.h */,
 				CF0A213D1ADDF681001802A3 /* RTCSessionDescription+JSON.m */,
+				CF5BD2A41ADEB9F2009F73A9 /* NetworkManager.h */,
+				CF5BD2A51ADEB9F2009F73A9 /* NetworkManager.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -387,6 +392,7 @@
 		CFD86A021AB4953300B7DBF5 /* CustomerServiceClient */ = {
 			isa = PBXGroup;
 			children = (
+				CF9636D01AD977EB00D1279B /* Common.h */,
 				CFB80F451ADDB0E6000D7A78 /* Utils */,
 				CFC14DF71ACD8FEA009EC9B8 /* Controllers */,
 				CFC14DF61ACD8FE2009EC9B8 /* Models */,
@@ -398,7 +404,6 @@
 				CFD86A151AB4953300B7DBF5 /* LaunchScreen.xib */,
 				CFD86A0A1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld */,
 				CFD86A031AB4953300B7DBF5 /* Supporting Files */,
-				CF9636D01AD977EB00D1279B /* Common.h */,
 			);
 			path = CustomerServiceClient;
 			sourceTree = "<group>";
@@ -573,6 +578,7 @@
 				CFD86A0F1AB4953300B7DBF5 /* ViewController.m in Sources */,
 				CFA5BE3F1AD8B9BF001154F4 /* PTPusherConnection.m in Sources */,
 				CFA5BE371AD8B9BF001154F4 /* NSString+Hashing.m in Sources */,
+				CF5BD2A61ADEB9F2009F73A9 /* NetworkManager.m in Sources */,
 				CFA5BE441AD8B9BF001154F4 /* PTURLRequestOperation.m in Sources */,
 				CFD86A061AB4953300B7DBF5 /* main.m in Sources */,
 				CFC14DFA1ACD9077009EC9B8 /* VideoCallView.m in Sources */,

@@ -20,6 +20,7 @@
 #import "RTCICECandidate+JSON.h"
 #import "RTCSessionDescription+JSON.h"
 #import "Pusher.h"
+#import "NetworkManager.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -39,7 +40,7 @@
 
 @implementation VideoCallViewController
 
-- (id)initWithRoomId:(NSInteger)roomId {
+- (id)init {
     self = [super init];
     if (self) {
         self.factory = [[RTCPeerConnectionFactory alloc] init];
@@ -53,37 +54,7 @@
         isInitiator = NO;
         
         
-        // Initialize Pusher Signaling
         
-        self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
-        self.pusher.authorizationURL = [NSURL URLWithString:@"http://192.168.1.119:3000/pusher/auth_video"];
-        [self.pusher connect];
-        
-        self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:@"video-1" auth:@{@"room_number":@"1"}];
-        
-        [self.privateChannel bindToEventNamed:@"client-offer" handleWithBlock:^(PTPusherEvent *event) {
-            // Receive Offer from web
-            NSDictionary *offer = [NSDictionary dictionaryWithDictionary:event.data];
-            ALog(@"Client-Offer %@", offer);
-            RTCSessionDescription *remoteDescription = [RTCSessionDescription descriptionFromJSONDictionary:offer];
-            [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
-        }];
-        
-        [self.privateChannel bindToEventNamed:@"client-answer" handleWithBlock:^(PTPusherEvent *event) {
-            NSDictionary *answer = [NSDictionary dictionaryWithDictionary:event.data];
-            RTCSessionDescription *remoteDescription = [RTCSessionDescription descriptionFromJSONDictionary:answer];
-            [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
-        }];
-        
-        [self.privateChannel bindToEventNamed:@"client-icecandidate" handleWithBlock:^(PTPusherEvent *event) {
-            NSLog(@"Client-IceCandidate %@", event.data);
-            
-            NSDictionary *jsonDictionary = [NSDictionary dictionaryWithDictionary:event.data];
-            
-            RTCICECandidate *iceCandidate = [RTCICECandidate candidateFromJSONDictionary:jsonDictionary];
-            [self.peerConnection addICECandidate:iceCandidate];
-            
-        }];
         
 //        [channel bindToEventNamed:@"pusher:subscription_succeeded" handleWithBlock:^(PTPusherEvent *event) {
 //            NSLog(@"Subscription succeeded");
@@ -96,9 +67,8 @@
 - (void)loadView {
     self.title = @"Video Call View Controller";
     
-    UIBarButtonItem *startBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Call" style:UIBarButtonItemStylePlain target:self action:@selector(makeCall)];
-    self.navigationItem.rightBarButtonItem = startBarItem;
-    
+//    UIBarButtonItem *startBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Call" style:UIBarButtonItemStylePlain target:self action:@selector(makeCall)];
+//    self.navigationItem.rightBarButtonItem = startBarItem;
     
     // Initialize WebRTC Views
     self.videoCallView = [[VideoCallView alloc] initWithFrame:CGRectZero];
@@ -110,18 +80,64 @@
     
     self.localMediaStream = [self createLocalMediaStream];
     [self.peerConnection addStream:self.localMediaStream];
+    
+    [self request];
 }
 
-- (void)makeCall {
+- (void)makeCall:(NSInteger)roomId {
+    // Initialize Pusher Signaling
+    self.pusher = [PTPusher pusherWithKey:@"bb5a0d0fedc8e9367e47" delegate:self encrypted:YES];
+    self.pusher.authorizationURL = [NSURL URLWithString:
+                                    [NSString stringWithFormat:@"%@/pusher/auth_video", HOST]];
+    [self.pusher connect];
+    
+    NSString *channelName = [NSString stringWithFormat:@"video-%ld", (long)roomId];
+    self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:channelName auth:@{@"room_number":@"1"}];
+    
+    [self.privateChannel bindToEventNamed:@"client-offer" handleWithBlock:^(PTPusherEvent *event) {
+        // Receive Offer from web
+        NSDictionary *offer = [NSDictionary dictionaryWithDictionary:event.data];
+        ALog(@"Client-Offer %@", offer);
+        RTCSessionDescription *remoteDescription = [RTCSessionDescription descriptionFromJSONDictionary:offer];
+        [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
+    }];
+    
+    [self.privateChannel bindToEventNamed:@"client-answer" handleWithBlock:^(PTPusherEvent *event) {
+        NSDictionary *answer = [NSDictionary dictionaryWithDictionary:event.data];
+        RTCSessionDescription *remoteDescription = [RTCSessionDescription descriptionFromJSONDictionary:answer];
+        [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
+    }];
+    
+    [self.privateChannel bindToEventNamed:@"client-icecandidate" handleWithBlock:^(PTPusherEvent *event) {
+        NSLog(@"Client-IceCandidate %@", event.data);
+        
+        NSDictionary *jsonDictionary = [NSDictionary dictionaryWithDictionary:event.data];
+        
+        RTCICECandidate *iceCandidate = [RTCICECandidate candidateFromJSONDictionary:jsonDictionary];
+        [self.peerConnection addICECandidate:iceCandidate];
+        
+    }];
+    
     isInitiator = YES;
     [self.peerConnection createOfferWithDelegate:self constraints:[self defaultMediaStreamConstraints]];
 }
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+- (void)request {
+    [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            if ([responseDict[@"code"] isEqualToString:@"AVAILABLE"]) {
+                [self makeCall:[responseDict[@"id"] integerValue]];
+            } else {
+                ALog(@"Please Wait...");
+            }
+        });
+    }];
 }
+
+//- (void)viewDidLoad {
+//    [super viewDidLoad];
+//    // Do any additional setup after loading the view.
+//}
 
 // Get Stream
 - (RTCMediaStream *)createLocalMediaStream {

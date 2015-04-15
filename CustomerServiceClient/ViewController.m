@@ -8,12 +8,13 @@
 
 #import "ViewController.h"
 #import "VideoCallViewController.h"
-
+#import "NetworkManager.h"
 
 @interface ViewController ()
-@property (nonatomic, strong) PTPusher *client;
+//@property (nonatomic, strong) PTPusher *client;
 
 - (IBAction)prepare:(id)sender;
+- (IBAction)request:(id)sender;
 @end
 
 @implementation ViewController
@@ -41,8 +42,16 @@
 }
 
 - (IBAction)prepare:(id)sender {
-    VideoCallViewController *viewController = [[VideoCallViewController alloc] initWithRoomId:1];
+    VideoCallViewController *viewController = [[VideoCallViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (IBAction)request:(id)sender {
+    [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            
+        });
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,7 +71,7 @@
 //- (void)presenceChannelDidSubscribe:(PTPusherPresenceChannel *)channel {
 //     NSLog(@"Did Subscribe");
 //}
-
+/*
 #pragma mark - PTPusherDelegate methods
 
 - (BOOL)pusher:(PTPusher *)pusher connectionWillConnect:(PTPusherConnection *)connection
@@ -124,19 +133,5 @@
     NSLog(@"[pusher-%@] Received error event %@", pusher.connection.socketID, errorEvent);
 }
 
-/* The sample app uses HTTP basic authentication.
- 
- This demonstrates how we can intercept the authorization request to configure it for our app's
- authentication/authorisation needs.
- */
-- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withRequest:(NSMutableURLRequest *)request {
-    ALog(@"[pusher-%@] Authorizing channel access...", pusher.connection.socketID);
-//    [request setValue:@"1" forHTTPHeaderField:@"room_number"];
-
-//    NSMutableDictionary *dict;
-//    [dict sortedQueryString];
-//    
-//    ALog(@"%@", [NSJSONSerialization JSONObjectWithData:request.HTTPBody options:0 error:nil]);
-}
-
+*/
 @end

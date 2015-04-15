@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface VideoCallViewController : UIViewController
-- (id)initWithRoomId:(NSInteger)roomId;
+//- (id)initWithRoomId:(NSInteger)roomId;
+
 @end
