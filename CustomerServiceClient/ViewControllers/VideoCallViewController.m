@@ -58,7 +58,7 @@ static NSString * const kARDDefaultSTUNServerUrl =
         
         // Create Instance of RTCPeerConnection
         RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
-        self.peerConnection = [_factory peerConnectionWithICEServers:nil//self.iceServers
+        self.peerConnection = [_factory peerConnectionWithICEServers:self.iceServers
                                                          constraints:constraints
                                                             delegate:self];
         
