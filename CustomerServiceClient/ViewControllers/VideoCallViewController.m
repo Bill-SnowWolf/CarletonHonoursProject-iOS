@@ -20,6 +20,7 @@
 #import "RTCICECandidate+JSON.h"
 #import "RTCSessionDescription+JSON.h"
 #import "Pusher.h"
+#import "RTCICEServer.h"
 #import "NetworkManager.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -41,25 +42,36 @@
 
 @property (nonatomic) NSInteger roomNumber;
 @property (nonatomic) NSInteger callId;
+@property (nonatomic) NSMutableArray *iceServers;
 @end
 
 @implementation VideoCallViewController
 
+static NSString * const kARDDefaultSTUNServerUrl =
+@"stun:stun.l.google.com:19302";
+
+
 - (id)init {
     self = [super init];
     if (self) {
-        self.factory = [[RTCPeerConnectionFactory alloc] init];
+        [self config];
         
         // Create Instance of RTCPeerConnection
         RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
-        self.peerConnection = [_factory peerConnectionWithICEServers:nil
+        self.peerConnection = [_factory peerConnectionWithICEServers:nil//self.iceServers
                                                          constraints:constraints
                                                             delegate:self];
         
         isInitiator = NO;
         self.started = NO;
+        
     }
     return self;
+}
+
+- (void)config {
+    self.factory = [[RTCPeerConnectionFactory alloc] init];
+    self.iceServers = [NSMutableArray arrayWithObject:[self defaultSTUNServer]];
 }
 
 - (void)loadView {
@@ -133,6 +145,7 @@
     [self.privateChannel bindToEventNamed:@"client-answer" handleWithBlock:^(PTPusherEvent *event) {
         NSDictionary *answer = [NSDictionary dictionaryWithDictionary:event.data];
         RTCSessionDescription *remoteDescription = [RTCSessionDescription descriptionFromJSONDictionary:answer];
+        ALog(@"Remote Description: %@", answer);
         [self.peerConnection setRemoteDescriptionWithDelegate:self sessionDescription:remoteDescription];
     }];
     
@@ -178,7 +191,7 @@
     RTCMediaStream* localStream = [self.factory mediaStreamWithLabel:@"ARDAMS"];
     
 #if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
-    NSString *cameraID = nil;
+   /* NSString *cameraID = nil;
     for (AVCaptureDevice *captureDevice in
          [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
         if (captureDevice.position == AVCaptureDevicePositionFront) {
@@ -195,11 +208,11 @@
     localVideoTrack = [self.factory videoTrackWithID:@"ARDAMSv0" source:videoSource];
     if (localVideoTrack) {
         [localStream addVideoTrack:localVideoTrack];
-    }
+    }*/
 #endif
     [localStream addAudioTrack:[self.factory audioTrackWithID:@"ARDAMSa0"]];
     
-    [localVideoTrack addRenderer:self.videoCallView.localVideoView];
+//    [localVideoTrack addRenderer:self.videoCallView.localVideoView];
     
     return localStream;
 }
@@ -210,12 +223,12 @@
 //        case RTCICEConnectionChecking:
 //            return @"Connecting...";
         case RTCICEConnectionConnected:
+        case RTCICEConnectionCompleted:
             return @"You are connected to representative now!";
-//        case RTCICEConnectionCompleted:
-//        case RTCICEConnectionFailed:
+        case RTCICEConnectionFailed:
         case RTCICEConnectionDisconnected:
+        case RTCICEConnectionClosed:
             return @"Your call is disconnected.";
-//        case RTCICEConnectionClosed:
         default:
             return nil;
     }
@@ -250,7 +263,7 @@
 - (RTCMediaConstraints *)defaultOfferConstraints {
     NSArray *mandatoryConstraints = @[
                                       [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"false"]
                                       ];
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc]
@@ -258,6 +271,14 @@
      optionalConstraints:nil];
     return constraints;
 }
+
+- (RTCICEServer *)defaultSTUNServer {
+    NSURL *defaultSTUNServerURL = [NSURL URLWithString:kARDDefaultSTUNServerUrl];
+    return [[RTCICEServer alloc] initWithURI:defaultSTUNServerURL
+                                    username:@""
+                                    password:@""];
+}
+
 
 
 
@@ -303,6 +324,12 @@
             case RTCICEConnectionConnected:
                 [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
                 [self.videoCallView appendStatus:[self statusTextForState:newState]];
+                break;
+            case RTCICEConnectionClosed:
+            case RTCICEConnectionDisconnected:
+            case RTCICEConnectionFailed:
+                [self.videoCallView appendStatus:[self statusTextForState:newState]];
+                [self disconnect];
                 break;
             default:
                 break;
