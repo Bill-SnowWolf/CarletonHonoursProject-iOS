@@ -132,7 +132,8 @@ static NSString * const kARDDefaultSTUNServerUrl =
     [self.pusher connect];
     
     NSString *channelName = [NSString stringWithFormat:@"video-%ld", (long)roomId];
-    self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:channelName auth:@{@"room_number":@"1"}];
+    NSDictionary *auth = @{@"room_number": [NSString stringWithFormat:@"%ld", (long)roomId]};
+    self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:channelName auth:auth];
     
     [self.privateChannel bindToEventNamed:@"client-offer" handleWithBlock:^(PTPusherEvent *event) {
         // Receive Offer from web
