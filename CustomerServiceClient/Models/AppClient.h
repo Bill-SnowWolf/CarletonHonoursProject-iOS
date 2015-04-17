@@ -24,13 +24,6 @@ typedef NS_ENUM(NSInteger, AppClientState) {
 @protocol AppClientDelegate <NSObject>
 
 - (void)appClient:(AppClient *)client didChangeState:(AppClientState)state object:(NSObject *)object;
-//- (void)appClient:(AppClient *)client didFindAvailableRepresentative:(NSInteger)representativeId;
-//- (void)appClient:(AppClient *)client didChangeConnectionState:(RTCICEConnectionState)state;
-
-//- (void)appClient:(AppClient *)client didReceiveLocalVideoTrack:(RTCVideoTrack *)localVideoTrack;
-
-//- (void)appClient:(ARDAppClient *)client didReceiveRemoteVideoTrack:(RTCVideoTrack *)remoteVideoTrack;
-
 - (void)appClient:(AppClient *)client didError:(NSError *)error;
 
 @end

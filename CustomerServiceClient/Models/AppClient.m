@@ -63,14 +63,10 @@
             if ([responseDict[@"code"] isEqualToString:@"AVAILABLE"]) {
                 _state = kAppClientStateConnecting;
                 [self.delegate appClient:self didChangeState:kAppClientStateConnecting object:self.roomNumber];
-//                [self.delegate appClient:self didFindAvailableRepresentative:self.roomNumber];
                 [self connectToRoomWithId:self.roomNumber];
-//                [self makeCall:[responseDict[@"room"] integerValue]];
             } else {
                 _state = kAppClientStateWaiting;
                 [self.delegate appClient:self didChangeState:kAppClientStateWaiting object:responseDict[@"waiting_count"]];
-//                NSString *status = [NSString stringWithFormat:@"Sorry, all representatives are on the line. Please wait... There are %@ in front of you", responseDict[@"waiting_count"]];
-//                [self.videoCallView appendStatus:status];
             }
         });
     }];
@@ -144,40 +140,9 @@
 - (RTCMediaStream *)createLocalMediaStream {
     RTCMediaStream* localStream = [self.factory mediaStreamWithLabel:@"ARDAMS"];
     
-#if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
-    /* NSString *cameraID = nil;
-     for (AVCaptureDevice *captureDevice in
-     [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
-     if (captureDevice.position == AVCaptureDevicePositionFront) {
-     cameraID = [captureDevice localizedName];
-     break;
-     }
-     }
-     NSAssert(cameraID, @"Unable to get the front camera id");
-     
-     RTCVideoCapturer *capturer = [RTCVideoCapturer capturerWithDeviceName:cameraID];
-     RTCMediaConstraints *mediaConstraints = [self defaultMediaStreamConstraints];
-     RTCVideoSource *videoSource = [self.factory videoSourceWithCapturer:capturer
-     constraints:mediaConstraints];
-     localVideoTrack = [self.factory videoTrackWithID:@"ARDAMSv0" source:videoSource];
-     if (localVideoTrack) {
-     [localStream addVideoTrack:localVideoTrack];
-     }*/
-#endif
     [localStream addAudioTrack:[self.factory audioTrackWithID:@"ARDAMSa0"]];
-    
-    //    [localVideoTrack addRenderer:self.videoCallView.localVideoView];
-    
     return localStream;
 }
-
-//- (RTCICEServer *)defaultSTUNServer {
-//    NSURL *defaultSTUNServerURL = [NSURL URLWithString:defaultSTUNServerURL];
-//    return [[RTCICEServer alloc] initWithURI:defaultSTUNServerURL
-//                                    username:@""
-//                                    password:@""];
-//}
-
 
 #pragma mark - Pusher Signaling
 #pragma mark - PTPusherDelegate methods
@@ -276,16 +241,16 @@
             case RTCICEConnectionConnected:
                 _state = kAppClientStateConnected;
                 [self.delegate appClient:self didChangeState:kAppClientStateConnected object:nil];
-//                [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
-//                [self.videoCallView appendStatus:[self statusTextForState:newState]];
+                
+                [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
+
                 break;
             case RTCICEConnectionClosed:
             case RTCICEConnectionDisconnected:
             case RTCICEConnectionFailed:
                 _state = kAppClientStateDisconnected;
                 [self.delegate appClient:self didChangeState:kAppClientStateDisconnected object:nil];
-//                [self.videoCallView appendStatus:[self statusTextForState:newState]];
-//                [self disconnect];
+                [self disconnect];
                 break;
             default:
                 break;
