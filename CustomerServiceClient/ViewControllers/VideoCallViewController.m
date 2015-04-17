@@ -22,18 +22,19 @@
 #import "Pusher.h"
 #import "RTCICEServer.h"
 #import "NetworkManager.h"
+#import "AppClient.h"
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface VideoCallViewController () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate, PTPusherDelegate>
+@interface VideoCallViewController () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate, PTPusherDelegate, AppClientDelegate>
 {
-    RTCVideoTrack *localVideoTrack;
-    RTCVideoTrack *remoteVideoTrack;
+//    RTCVideoTrack *localVideoTrack;
+//    RTCVideoTrack *remoteVideoTrack;
     BOOL isInitiator;
 }
 @property (nonatomic) VideoCallView *videoCallView;
 @property (nonatomic) RTCPeerConnectionFactory *factory;
-@property (nonatomic, weak) RTCMediaStream *localMediaStream;
+@property (nonatomic) RTCMediaStream *localMediaStream;
 @property (nonatomic) RTCPeerConnection *peerConnection;
 @property (nonatomic) PTPusher *pusher;
 @property (nonatomic) PTPusherPrivateChannel *privateChannel;
@@ -43,6 +44,7 @@
 @property (nonatomic) NSInteger roomNumber;
 @property (nonatomic) NSInteger callId;
 @property (nonatomic) NSMutableArray *iceServers;
+@property (nonatomic) AppClient *appClient;
 @end
 
 @implementation VideoCallViewController
@@ -85,8 +87,11 @@ static NSString * const kARDDefaultSTUNServerUrl =
     
     self.localMediaStream = [self createLocalMediaStream];
     [self.peerConnection addStream:self.localMediaStream];
+   
     
-    [self request];
+    self.appClient = [[AppClient alloc] initWithDelegate:self];
+    [self.appClient checkAvailableRepresentatives];
+//    [self request];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,16 +109,16 @@ static NSString * const kARDDefaultSTUNServerUrl =
     if (self.pusher != nil) {
         [self.pusher disconnect];
     }
-    if (remoteVideoTrack) {
-        [remoteVideoTrack removeRenderer:self.videoCallView.remoteVideoView];
-        remoteVideoTrack = nil;
-        [self.videoCallView.remoteVideoView renderFrame:nil];
-    }
-    if (localVideoTrack) {
-        [localVideoTrack removeRenderer:self.videoCallView.localVideoView];
-        localVideoTrack = nil;
-        [self.videoCallView.localVideoView renderFrame:nil];
-    }
+//    if (remoteVideoTrack) {
+//        [remoteVideoTrack removeRenderer:self.videoCallView.remoteVideoView];
+//        remoteVideoTrack = nil;
+//        [self.videoCallView.remoteVideoView renderFrame:nil];
+//    }
+//    if (localVideoTrack) {
+//        [localVideoTrack removeRenderer:self.videoCallView.localVideoView];
+//        localVideoTrack = nil;
+//        [self.videoCallView.localVideoView renderFrame:nil];
+//    }
     
     self.peerConnection = nil;
     self.pusher = nil;
@@ -300,8 +305,8 @@ static NSString * const kARDDefaultSTUNServerUrl =
               (unsigned long)stream.videoTracks.count,
               (unsigned long)stream.audioTracks.count);
         if (stream.videoTracks.count) {
-            remoteVideoTrack = stream.videoTracks[0];
-            [remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
+//            remoteVideoTrack = stream.videoTracks[0];
+//            [remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
         }
     });
 }
@@ -466,5 +471,29 @@ didSetSessionDescriptionWithError:(NSError *)error {
     NSLog(@"[pusher-%@] Authorizing channel access...", pusher.connection.socketID);
     //    [request setHTTPBasicAuthUsername:CHANNEL_AUTH_USERNAME password:CHANNEL_AUTH_PASSWORD];
 }
+
+#pragma mark <AppClientDelegate>
+- (void)appClient:(AppClient *)client didChangeState:(AppClientState)state object:(NSObject *)object {
+    switch (state) {
+        case kAppClientStateWaiting: {
+            NSString *count = (NSString *)object;
+            NSString *status = [NSString stringWithFormat:@"Sorry, all representatives are on the line. Please wait... There are %@ in front of you", count];
+            [self.videoCallView appendStatus:status];
+
+            break;
+        }
+        case kAppClientStateConnecting: {
+            NSString *roomId = (NSString *)object;
+            [self makeCall:[roomId integerValue]];
+        }
+            
+        default:
+            break;
+    }
+}
+
+//- (void)appClient:(AppClient *)client didFindAvailableRepresentative:(NSInteger)representativeId {
+//
+//}
 
 @end
