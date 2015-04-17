@@ -78,6 +78,8 @@
 - (void)connectToRoomWithId:(NSString *)roomId {
     [self config];
     
+    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connecting"];
+    
     // Create Instance of RTCPeerConnection
     RTCMediaConstraints *constraints = [RTCPeerConnectionDefaults defaultPeerConnectionConstraints];
     self.peerConnection = [_factory peerConnectionWithICEServers:self.iceServers
@@ -95,10 +97,10 @@
                                     [NSString stringWithFormat:@"%@/pusher/auth_video", HOST]];
     [self.pusher connect];
 
-    NSString *channelName = [NSString stringWithFormat:@"video-%@", roomId];
+    NSString *channelName = [NSString stringWithFormat:@"audio-%@", roomId];
     NSDictionary *auth = @{@"room_number": roomId};
     self.privateChannel = [self.pusher subscribeToPrivateChannelNamed:channelName auth:auth];
-
+    
     [self.privateChannel bindToEventNamed:@"client-offer" handleWithBlock:^(PTPusherEvent *event) {
         // Receive Offer from web
         NSDictionary *offer = [NSDictionary dictionaryWithDictionary:event.data];
@@ -192,6 +194,7 @@
 - (void)pusher:(PTPusher *)pusher didSubscribeToChannel:(PTPusherChannel *)channel
 {
     NSLog(@"[pusher-%@] Subscribed to channel %@", pusher.connection.socketID, channel);
+    [self.privateChannel triggerEventNamed:@"client-connecting" data:@{}];
 }
 
 - (void)pusher:(PTPusher *)pusher didFailToSubscribeToChannel:(PTPusherChannel *)channel withError:(NSError *)error
@@ -272,7 +275,7 @@
     // onicecandidate
     dispatch_async(dispatch_get_main_queue(), ^{
         NSDictionary *dict = [candidate JSONDictionary];
-        ALog(@"8 %@", dict);
+        ALog(@"%@", dict);
         [self.privateChannel triggerEventNamed:@"client-icecandidate" data:dict];
     });
 }
@@ -286,8 +289,6 @@
 // dispatched back to main queue as needed.
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didCreateSessionDescription:(RTCSessionDescription *)sdp error:(NSError *)error {
-    
-    ALog(@"4");
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error) {
             ALog(@"Failed to create session description. Error: %@", error);
@@ -295,7 +296,7 @@
         }
         [self.peerConnection setLocalDescriptionWithDelegate:self
                                           sessionDescription:sdp];
-        ALog(@"6 type: %@", sdp.type);
+        ALog(@"type: %@", sdp.type);
         NSString *eventName = [NSString stringWithFormat:@"client-%@", sdp.type];
         [self.privateChannel triggerEventNamed:eventName data:[sdp JSONDictionary]];
     });
@@ -303,7 +304,6 @@
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didSetSessionDescriptionWithError:(NSError *)error {
-    ALog(@"5");
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error) {
             ALog(@"Failed to set session description. Error: %@", error);
@@ -312,7 +312,6 @@ didSetSessionDescriptionWithError:(NSError *)error {
         // If we're answering and we've just set the remote offer we need to create
         // an answer and set the local description.
         if (!self.isInitiator && !self.peerConnection.localDescription) {
-            ALog(@"7");
             [self.peerConnection createAnswerWithDelegate:self constraints:[RTCPeerConnectionDefaults defaultOfferConstraints]];
         }
     });
