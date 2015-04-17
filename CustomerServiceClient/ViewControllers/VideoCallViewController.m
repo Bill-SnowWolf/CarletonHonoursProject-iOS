@@ -104,7 +104,7 @@ static NSString * const kARDDefaultSTUNServerUrl =
 }
 
 - (void)disconnect {
-    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
+//    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
     
     if (self.pusher != nil) {
         [self.pusher disconnect];
@@ -328,7 +328,7 @@ static NSString * const kARDDefaultSTUNServerUrl =
         self.connectionState = newState;
         switch (newState) {
             case RTCICEConnectionConnected:
-                [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
+//                [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
                 [self.videoCallView appendStatus:[self statusTextForState:newState]];
                 break;
             case RTCICEConnectionClosed:
@@ -484,16 +484,25 @@ didSetSessionDescriptionWithError:(NSError *)error {
         }
         case kAppClientStateConnecting: {
             NSString *roomId = (NSString *)object;
-            [self makeCall:[roomId integerValue]];
+            NSString *status = [NSString stringWithFormat:@"Representative %@ is picking your call. Connecting...", roomId];
+            [self.videoCallView appendStatus:status];
+            break;
+        }
+            
+        case kAppClientStateConnected: {
+            [NetworkManager updateCallStatusWithId:self.appClient.callId room:self.appClient.roomNumber status:@"connected"];
+            [self.videoCallView appendStatus:@"You are connected to representative now!"];
+            break;
+        }
+            
+        case kAppClientStateDisconnected: {
+            [self.videoCallView appendStatus:@"Your call is disconnected."];
+            [self disconnect];
         }
             
         default:
             break;
     }
 }
-
-//- (void)appClient:(AppClient *)client didFindAvailableRepresentative:(NSInteger)representativeId {
-//
-//}
 
 @end

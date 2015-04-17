@@ -11,7 +11,7 @@
 #import "RTCPair.h"
 #import "RTCICEServer.h"
 
-static NSString * const kARDDefaultSTUNServerUrl =
+static NSString * const kDefaultSTUNServerUrl =
 @"stun:stun.l.google.com:19302";
 
 @implementation RTCPeerConnectionDefaults
@@ -42,7 +42,7 @@ static NSString * const kARDDefaultSTUNServerUrl =
 }
 
 + (RTCICEServer *)defaultSTUNServer {
-    NSURL *defaultSTUNServerURL = [NSURL URLWithString:kARDDefaultSTUNServerUrl];
+    NSURL *defaultSTUNServerURL = [NSURL URLWithString:kDefaultSTUNServerUrl];
     return [[RTCICEServer alloc] initWithURI:defaultSTUNServerURL
                                     username:@""
                                     password:@""];

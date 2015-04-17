@@ -38,12 +38,12 @@ typedef NS_ENUM(NSInteger, AppClientState) {
 @interface AppClient : NSObject
 @property (nonatomic, readonly) AppClientState state;
 @property (nonatomic, weak) id<AppClientDelegate> delegate;
-@property (nonatomic) NSInteger roomNumber;
-@property (nonatomic) NSInteger callId;
+@property (nonatomic) NSString *roomNumber;
+@property (nonatomic) NSString *callId;
 
 - (id)initWithDelegate:(id<AppClientDelegate>)delegate;
 - (void)checkAvailableRepresentatives;
-- (void)connectToRoomWithId:(NSInteger)roomId;
+- (void)connectToRoomWithId:(NSString *)roomId;
 - (void)disconnect;
 
 @end

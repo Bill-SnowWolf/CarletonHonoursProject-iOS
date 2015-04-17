@@ -36,10 +36,10 @@
     }] resume];
 }
 
-+ (void)updateCallStatusWithId:(NSInteger)callId room:(NSInteger)room status:(NSString *)status {
++ (void)updateCallStatusWithId:(NSString *)callId room:(NSString *)room status:(NSString *)status {
     NSDictionary *callDict = @{
-                                  @"id": [NSNumber numberWithInteger:callId],
-                                  @"room": [NSNumber numberWithInteger:room],
+                                  @"id": callId,
+                                  @"room": room,
                                   @"status": status
                                   };
     NSDictionary *requestDict = @{
