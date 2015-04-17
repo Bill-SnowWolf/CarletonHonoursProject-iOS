@@ -45,23 +45,16 @@
     NSDictionary *requestDict = @{
                                   @"service_call": callDict
                                   };
-    //    NSDictionary *requestDict = [[NSDictionary alloc] initWithObjectsAndKeys:credential, @"user", nil];
+    
     NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestDict options:0 error:nil];
     
     NSURLRequest *request = [NetworkManager createRequestWithMethod:@"PUT" data:requestData api:
-                             [NSString stringWithFormat:@"/api/service_calls/%ld", (long)callId]];
+                             [NSString stringWithFormat:@"/api/service_calls/%@", callId]];
     
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         @autoreleasepool {
-//            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-//            if (data != nil && httpResponse.statusCode == 200) {
-//                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//                ALog(@"%@", responseDict);
-//                completion(responseDict);
-//            } else {
-//                completion(nil);
-//            }
+
         }
     }] resume];
 

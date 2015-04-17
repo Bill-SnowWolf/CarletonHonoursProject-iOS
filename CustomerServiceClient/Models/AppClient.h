@@ -17,6 +17,8 @@ typedef NS_ENUM(NSInteger, AppClientState) {
     kAppClientStateConnected,
     // Waiting in the queue
     kAppClientStateWaiting,
+    // Checking available representatives
+    kAppClientStateChecking,
 };
 
 @class AppClient;

@@ -7,14 +7,13 @@
 //
 
 #import "ViewController.h"
-#import "VideoCallViewController.h"
+#import "AudioCallViewController.h"
 #import "NetworkManager.h"
 
 @interface ViewController ()
 //@property (nonatomic, strong) PTPusher *client;
 
 - (IBAction)prepare:(id)sender;
-- (IBAction)request:(id)sender;
 @end
 
 @implementation ViewController
@@ -24,16 +23,8 @@
 }
 
 - (IBAction)prepare:(id)sender {
-    VideoCallViewController *viewController = [[VideoCallViewController alloc] init];
+    AudioCallViewController *viewController = [[AudioCallViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (IBAction)request:(id)sender {
-    [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            
-        });
-    }];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		CF0A213E1ADDF681001802A3 /* RTCSessionDescription+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CF0A213D1ADDF681001802A3 /* RTCSessionDescription+JSON.m */; };
 		CF5BD2A61ADEB9F2009F73A9 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CF5BD2A51ADEB9F2009F73A9 /* NetworkManager.m */; };
-		CF9636CF1AD976DB00D1279B /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */; };
+		CF9636CF1AD976DB00D1279B /* AudioCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9636CE1AD976DB00D1279B /* AudioCallViewController.m */; };
 		CFA5BE0D1AD8B91D001154F4 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA5BE0C1AD8B91D001154F4 /* libWebRTC.a */; };
 		CFA5BE361AD8B9BF001154F4 /* NSDictionary+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE0F1AD8B9BF001154F4 /* NSDictionary+QueryString.m */; };
 		CFA5BE371AD8B9BF001154F4 /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA5BE101AD8B9BF001154F4 /* NSString+Hashing.m */; };
@@ -44,7 +44,7 @@
 		CFC14DF01ACD8FA5009EC9B8 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DEF1ACD8FA5009EC9B8 /* OpenGLES.framework */; };
 		CFC14DF21ACD8FAC009EC9B8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DF11ACD8FAC009EC9B8 /* QuartzCore.framework */; };
 		CFC14DF41ACD8FB4009EC9B8 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC14DF31ACD8FB4009EC9B8 /* libsqlite3.dylib */; };
-		CFC14DFA1ACD9077009EC9B8 /* VideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = CFC14DF91ACD9077009EC9B8 /* VideoCallView.m */; };
+		CFC14DFA1ACD9077009EC9B8 /* AudioCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = CFC14DF91ACD9077009EC9B8 /* AudioCallView.m */; };
 		CFD86A061AB4953300B7DBF5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CFD86A051AB4953300B7DBF5 /* main.m */; };
 		CFD86A091AB4953300B7DBF5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CFD86A081AB4953300B7DBF5 /* AppDelegate.m */; };
 		CFD86A0C1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CFD86A0A1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld */; };
@@ -98,8 +98,8 @@
 		CF35EDA11ACF934E00D75D66 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		CF5BD2A41ADEB9F2009F73A9 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkManager.h; path = Utils/NetworkManager.h; sourceTree = "<group>"; };
 		CF5BD2A51ADEB9F2009F73A9 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkManager.m; path = Utils/NetworkManager.m; sourceTree = "<group>"; };
-		CF9636CD1AD976DB00D1279B /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoCallViewController.h; path = ViewControllers/VideoCallViewController.h; sourceTree = "<group>"; };
-		CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoCallViewController.m; path = ViewControllers/VideoCallViewController.m; sourceTree = "<group>"; };
+		CF9636CD1AD976DB00D1279B /* AudioCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioCallViewController.h; path = ViewControllers/AudioCallViewController.h; sourceTree = "<group>"; };
+		CF9636CE1AD976DB00D1279B /* AudioCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioCallViewController.m; path = ViewControllers/AudioCallViewController.m; sourceTree = "<group>"; };
 		CF9636D01AD977EB00D1279B /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		CF9636D11AD9782500D1279B /* CSC-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CSC-Prefix.pch"; sourceTree = "<group>"; };
 		CFA5BE0C1AD8B91D001154F4 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = CustomerServiceClient/libWebRTC.a; sourceTree = "<group>"; };
@@ -162,8 +162,8 @@
 		CFC14DEF1ACD8FA5009EC9B8 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		CFC14DF11ACD8FAC009EC9B8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CFC14DF31ACD8FB4009EC9B8 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		CFC14DF81ACD9077009EC9B8 /* VideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoCallView.h; path = Views/VideoCallView.h; sourceTree = "<group>"; };
-		CFC14DF91ACD9077009EC9B8 /* VideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoCallView.m; path = Views/VideoCallView.m; sourceTree = "<group>"; };
+		CFC14DF81ACD9077009EC9B8 /* AudioCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioCallView.h; path = Views/AudioCallView.h; sourceTree = "<group>"; };
+		CFC14DF91ACD9077009EC9B8 /* AudioCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioCallView.m; path = Views/AudioCallView.m; sourceTree = "<group>"; };
 		CFD86A001AB4953300B7DBF5 /* CustomerServiceClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomerServiceClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFD86A041AB4953300B7DBF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFD86A051AB4953300B7DBF5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -351,8 +351,8 @@
 		CFC14DF51ACD8FDC009EC9B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CFC14DF81ACD9077009EC9B8 /* VideoCallView.h */,
-				CFC14DF91ACD9077009EC9B8 /* VideoCallView.m */,
+				CFC14DF81ACD9077009EC9B8 /* AudioCallView.h */,
+				CFC14DF91ACD9077009EC9B8 /* AudioCallView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -371,8 +371,8 @@
 		CFC14DF71ACD8FEA009EC9B8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				CF9636CD1AD976DB00D1279B /* VideoCallViewController.h */,
-				CF9636CE1AD976DB00D1279B /* VideoCallViewController.m */,
+				CF9636CD1AD976DB00D1279B /* AudioCallViewController.h */,
+				CF9636CE1AD976DB00D1279B /* AudioCallViewController.m */,
 				CFD86A0D1AB4953300B7DBF5 /* ViewController.h */,
 				CFD86A0E1AB4953300B7DBF5 /* ViewController.m */,
 			);
@@ -580,7 +580,7 @@
 				CFA5BE3B1AD8B9BF001154F4 /* PTPusher.m in Sources */,
 				CFD86A0C1AB4953300B7DBF5 /* CustomerServiceClient.xcdatamodeld in Sources */,
 				CFA5BE431AD8B9BF001154F4 /* PTTargetActionEventListener.m in Sources */,
-				CF9636CF1AD976DB00D1279B /* VideoCallViewController.m in Sources */,
+				CF9636CF1AD976DB00D1279B /* AudioCallViewController.m in Sources */,
 				CFA5BE401AD8B9BF001154F4 /* PTPusherEvent.m in Sources */,
 				CFA5BE361AD8B9BF001154F4 /* NSDictionary+QueryString.m in Sources */,
 				CFA5BE3E1AD8B9BF001154F4 /* PTPusherChannelAuthorizationOperation.m in Sources */,
@@ -592,7 +592,7 @@
 				CF5BD2A61ADEB9F2009F73A9 /* NetworkManager.m in Sources */,
 				CFA5BE441AD8B9BF001154F4 /* PTURLRequestOperation.m in Sources */,
 				CFD86A061AB4953300B7DBF5 /* main.m in Sources */,
-				CFC14DFA1ACD9077009EC9B8 /* VideoCallView.m in Sources */,
+				CFC14DFA1ACD9077009EC9B8 /* AudioCallView.m in Sources */,
 				CFB80F481ADDB110000D7A78 /* RTCICECandidate+JSON.m in Sources */,
 				CF0A213E1ADDF681001802A3 /* RTCSessionDescription+JSON.m in Sources */,
 				CFA5BE411AD8B9BF001154F4 /* PTPusherEventDispatcher.m in Sources */,

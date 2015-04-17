@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 SnowWolf. All rights reserved.
 //
 
-#import "VideoCallView.h"
+#import "AudioCallView.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -16,7 +16,7 @@ static CGFloat const kLocalVideoViewWidth = 90;
 static CGFloat const kLocalVideoViewHeight = 120;
 static CGFloat const kLocalVideoViewPadding = 8;
 
-@interface VideoCallView () <RTCEAGLVideoViewDelegate>
+@interface AudioCallView () <RTCEAGLVideoViewDelegate>
 {
     CGSize _localVideoSize;
     CGSize _remoteVideoSize;
@@ -24,7 +24,7 @@ static CGFloat const kLocalVideoViewPadding = 8;
 @property (nonatomic) UITextView *statusTextView;
 @end
 
-@implementation VideoCallView
+@implementation AudioCallView
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {

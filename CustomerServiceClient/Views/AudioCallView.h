@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RTCEAGLVideoView.h"
 
-@interface VideoCallView : UIView
+@interface AudioCallView : UIView
 
 //@property (nonatomic, readonly) UILabel *statusLabel;
 //@property (nonatomic, readonly) RTCEAGLVideoView *localVideoView;

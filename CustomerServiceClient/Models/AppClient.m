@@ -55,6 +55,9 @@
 }
 
 - (void)checkAvailableRepresentatives {
+    _state = kAppClientStateChecking;
+    [self.delegate appClient:self didChangeState:_state object:nil];
+    
     [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             self.roomNumber = responseDict[@"room"];

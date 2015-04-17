@@ -6,18 +6,18 @@
 //  Copyright (c) 2015 SnowWolf. All rights reserved.
 //
 
-#import "VideoCallViewController.h"
-#import "VideoCallView.h"
+#import "AudioCallViewController.h"
+#import "AudioCallView.h"
 #import "AppClient.h"
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface VideoCallViewController () <AppClientDelegate>
-@property (nonatomic) VideoCallView *videoCallView;
+@interface AudioCallViewController () <AppClientDelegate>
+@property (nonatomic) AudioCallView *audioCallView;
 @property (nonatomic) AppClient *appClient;
 @end
 
-@implementation VideoCallViewController
+@implementation AudioCallViewController
 
 - (id)init {
     self = [super init];
@@ -31,10 +31,9 @@
     self.title = @"Video Call View Controller";
     
     // Initialize WebRTC Views
-    self.videoCallView = [[VideoCallView alloc] initWithFrame:CGRectZero];
-    self.videoCallView.backgroundColor = [UIColor redColor];
-    [self.videoCallView appendStatus:@"Looking for available representatives..."];
-    self.view = self.videoCallView;
+    self.audioCallView = [[AudioCallView alloc] initWithFrame:CGRectZero];
+    self.audioCallView.backgroundColor = [UIColor redColor];
+    self.view = self.audioCallView;
     
     [self.appClient checkAvailableRepresentatives];
 }
@@ -71,25 +70,30 @@
         case kAppClientStateWaiting: {
             NSString *count = (NSString *)object;
             NSString *status = [NSString stringWithFormat:@"Sorry, all representatives are on the line. Please wait... There are %@ in front of you", count];
-            [self.videoCallView appendStatus:status];
+            [self.audioCallView appendStatus:status];
 
             break;
         }
         case kAppClientStateConnecting: {
             NSString *roomId = (NSString *)object;
             NSString *status = [NSString stringWithFormat:@"Representative %@ is picking your call. Connecting...", roomId];
-            [self.videoCallView appendStatus:status];
+            [self.audioCallView appendStatus:status];
             break;
         }
             
         case kAppClientStateConnected: {
-            [self.videoCallView appendStatus:@"You are connected to representative now!"];
+            [self.audioCallView appendStatus:@"You are connected to representative now!"];
             break;
         }
             
         case kAppClientStateDisconnected: {
-            [self.videoCallView appendStatus:@"Your call is disconnected."];
+            [self.audioCallView appendStatus:@"Your call is disconnected."];
+            break;
         }
+        
+        case kAppClientStateChecking:
+            [self.audioCallView appendStatus:@"Looking for available representatives..."];
+            break;        
             
         default:
             break;
