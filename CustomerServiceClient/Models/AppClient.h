@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, AppClientState) {
 @property (nonatomic) NSString *roomNumber;
 @property (nonatomic) NSString *callId;
 
-- (id)initWithDelegate:(id<AppClientDelegate>)delegate;
+- (id)initWithDelegate:(id<AppClientDelegate>)delegate customerData:(NSDictionary *)customerData;
 - (void)checkAvailableRepresentatives;
 - (void)connectToRoomWithId:(NSString *)roomId;
 - (void)disconnect;

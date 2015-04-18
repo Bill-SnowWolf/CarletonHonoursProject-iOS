@@ -19,10 +19,10 @@
 
 @implementation AudioCallViewController
 
-- (id)init {
+- (id)initWithCustomerData:(NSDictionary *)customerData {
     self = [super init];
     if (self) {
-        self.appClient = [[AppClient alloc] initWithDelegate:self];
+        self.appClient = [[AppClient alloc] initWithDelegate:self customerData:customerData];
     }
     return self;
 }

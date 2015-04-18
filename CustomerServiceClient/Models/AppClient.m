@@ -36,13 +36,15 @@
 @property (nonatomic, getter=isInitiator) BOOL initiator;
 
 @property (nonatomic) NSMutableArray *iceServers;
+@property (nonatomic) NSDictionary *customerData;
 @end
 
 @implementation AppClient
-- (id)initWithDelegate:(id<AppClientDelegate>)delegate {
+- (id)initWithDelegate:(id<AppClientDelegate>)delegate customerData:(NSDictionary *)customerData {
     self = [super init];
     if (self) {
         self.delegate = delegate;
+        self.customerData = customerData;
         self.initiator = NO;
         self.started = NO;
     }
@@ -58,7 +60,7 @@
     _state = kAppClientStateChecking;
     [self.delegate appClient:self didChangeState:_state object:nil];
     
-    [NetworkManager sendServiceRequestWithCompletionHandler:^(NSDictionary *responseDict) {
+    [NetworkManager sendServiceRequestWithCustomerData:self.customerData completionHandler:^(NSDictionary *responseDict) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             self.roomNumber = responseDict[@"room"];
             self.callId = responseDict[@"id"];
@@ -78,7 +80,7 @@
 - (void)connectToRoomWithId:(NSString *)roomId {
     [self config];
     
-    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connecting"];
+    [NetworkManager updateCallStatusWithId:self.callId status:@"connecting"];
     
     // Create Instance of RTCPeerConnection
     RTCMediaConstraints *constraints = [RTCPeerConnectionDefaults defaultPeerConnectionConstraints];
@@ -131,7 +133,7 @@
 }
 
 - (void)disconnect {
-    [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"disconnected"];
+    [NetworkManager updateCallStatusWithId:self.callId status:@"disconnected"];
     
     if (self.pusher != nil) {
         [self.pusher disconnect];
@@ -194,7 +196,6 @@
 - (void)pusher:(PTPusher *)pusher didSubscribeToChannel:(PTPusherChannel *)channel
 {
     NSLog(@"[pusher-%@] Subscribed to channel %@", pusher.connection.socketID, channel);
-    [self.privateChannel triggerEventNamed:@"client-connecting" data:@{}];
 }
 
 - (void)pusher:(PTPusher *)pusher didFailToSubscribeToChannel:(PTPusherChannel *)channel withError:(NSError *)error
@@ -248,7 +249,7 @@
                 _state = kAppClientStateConnected;
                 [self.delegate appClient:self didChangeState:kAppClientStateConnected object:nil];
                 
-                [NetworkManager updateCallStatusWithId:self.callId room:self.roomNumber status:@"connected"];
+                [NetworkManager updateCallStatusWithId:self.callId status:@"connected"];
 
                 break;
             case RTCICEConnectionClosed:
@@ -299,6 +300,10 @@
         ALog(@"type: %@", sdp.type);
         NSString *eventName = [NSString stringWithFormat:@"client-%@", sdp.type];
         [self.privateChannel triggerEventNamed:eventName data:[sdp JSONDictionary]];
+        
+        if ([sdp.type isEqualToString:@"offer"]) {
+            [self.privateChannel triggerEventNamed:@"client-connecting" data:self.customerData];
+        }
     });
 }
 

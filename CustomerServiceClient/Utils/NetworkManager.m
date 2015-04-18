@@ -10,11 +10,12 @@
 
 @implementation NetworkManager
 
-+ (void)sendServiceRequestWithCompletionHandler:(void (^)(NSDictionary *))completion {
++ (void)sendServiceRequestWithCustomerData:(NSDictionary *)customerData completionHandler:(void (^)(NSDictionary *))completion {
 //    NSString *credential = [[[NSString alloc] initWithFormat:@"%@:%@", email, password] base64EncodedString];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *requestDict = @{
-        @"device_token": [userDefaults objectForKey:@"deviceToken"]
+        @"device_token": [userDefaults objectForKey:@"deviceToken"],
+        @"customer_data": customerData
     };
 //    NSDictionary *requestDict = [[NSDictionary alloc] initWithObjectsAndKeys:credential, @"user", nil];
     NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestDict options:0 error:nil];
@@ -36,10 +37,9 @@
     }] resume];
 }
 
-+ (void)updateCallStatusWithId:(NSString *)callId room:(NSString *)room status:(NSString *)status {
++ (void)updateCallStatusWithId:(NSString *)callId status:(NSString *)status {
     NSDictionary *callDict = @{
                                   @"id": callId,
-                                  @"room": room,
                                   @"status": status
                                   };
     NSDictionary *requestDict = @{

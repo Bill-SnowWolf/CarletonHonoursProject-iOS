@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface NetworkManager : NSObject
-+ (void)sendServiceRequestWithCompletionHandler:(void(^)(NSDictionary *responseDict))completion;
-+ (void)updateCallStatusWithId:(NSString *)callId room:(NSString *)room status:(NSString *)status;
++ (void)sendServiceRequestWithCustomerData:(NSDictionary *)customerData completionHandler:(void(^)(NSDictionary *responseDict))completion;
++ (void)updateCallStatusWithId:(NSString *)callId status:(NSString *)status;
 @end

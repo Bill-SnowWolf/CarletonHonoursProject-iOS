@@ -13,7 +13,7 @@
 @interface ViewController ()
 //@property (nonatomic, strong) PTPusher *client;
 
-- (IBAction)prepare:(id)sender;
+//- (IBAction)prepare:(id)sender;
 @end
 
 @implementation ViewController
@@ -22,10 +22,10 @@
     [super viewDidLoad];    
 }
 
-- (IBAction)prepare:(id)sender {
-    AudioCallViewController *viewController = [[AudioCallViewController alloc] init];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (IBAction)prepare:(id)sender {
+//    AudioCallViewController *viewController = [[AudioCallViewController alloc] init];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

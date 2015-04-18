@@ -10,5 +10,5 @@
 
 @interface AudioCallViewController : UIViewController <UIAlertViewDelegate>
 //- (id)initWithRoomId:(NSInteger)roomId;
-
+- (id)initWithCustomerData:(NSDictionary *)customerData;
 @end
